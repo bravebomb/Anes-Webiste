@@ -22,7 +22,7 @@ function App() {
             {/* Hero Section */}
             <section className="hero">
                 <div className="hero-text">
-                    <h2>Finally, binders that don’t tip over</h2>
+                    <h2>Finally, binders that donâ€™t tip over</h2>
                     <p>
                         And look <span className="highlight">great</span>!
                     </p>
@@ -54,3 +54,4 @@ function App() {
 // React root render
 const root = createRoot(document.getElementById("root"));
 root.render(<App />);
+export default App;
