@@ -88,83 +88,67 @@ const Home = () => {
           <nav style={styles.navMenu}>
             <button 
               style={styles.navBtn} 
-              onClick={() => handleNavClick('Home')}
+              onClick={() => handleNavClick('Bloggar')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #40e0d0, #f8b500)';
+                e.target.style.background = '#d7b7d4';
                 e.target.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff6b9d, #c44569)';
+                e.target.style.background = '#6d2777';
                 e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
               }}
             >
-              Home
+              Vart är jag?
             </button>
             <button 
               style={styles.navBtn} 
-              onClick={() => handleNavClick('Videos')}
+              onClick={() => handleNavClick('Random')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #f8b500, #ee5a52)';
+                e.target.style.background = '#d7b7d4';
                 e.target.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff6b9d, #c44569)';
+                e.target.style.background = '#6d2777';
                 e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
               }}
             >
-              Videos
+              Bukcet list
             </button>
             <button 
               style={styles.navBtn} 
-              onClick={() => handleNavClick('Games')}
+              onClick={() => handleNavClick('bilder')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #ee5a52, #40e0d0)';
+                e.target.style.background = '#d7b7d4';
                 e.target.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff6b9d, #c44569)';
+                e.target.style.background = '#6d2777';
                 e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
               }}
             >
-              Games
+              Bloggar
             </button>
             <button 
               style={styles.navBtn} 
-              onClick={() => handleNavClick('About')}
+              onClick={() => handleNavClick('Albins håla')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #c44569, #ff1744)';
+                e.target.style.background = '#d7b7d4';
                 e.target.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff6b9d, #c44569)';
+                e.target.style.background = '#6d2777';
                 e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
               }}
             >
-              About
-            </button>
-            <button 
-              style={styles.navBtn} 
-              onClick={() => handleNavClick('Contact')}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #40e0d0, #ff6b9d)';
-                e.target.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff6b9d, #c44569)';
-                e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
-              }}
-            >
-              Contact
+              Hålan
             </button>
           </nav>
         </header>
@@ -176,13 +160,20 @@ const Home = () => {
           <div style={styles.videoPlayer}>
             {/* Video Screen */}
             <div style={styles.videoScreen}>
-              {!isPlaying ? (
+              {isPlaying ? (
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/watch?v=t3vP021Zyik"
+                  title="YouTube video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ borderRadius: '15px' }}
+                ></iframe>
+              ) : (
                 <div style={styles.playButton} onClick={handlePlayVideo}>
                   <div style={styles.playTriangle}></div>
-                </div>
-              ) : (
-                <div style={styles.playingIndicator}>
-                  ▶️ Now Playing...
                 </div>
               )}
             </div>
@@ -300,7 +291,7 @@ siteContainer: {
 
 
   mainHeader: {
-    background: 'linear-gradient(135deg, #ff6b9d 0%, #c44569 25%, #f8b500 50%, #40e0d0 75%, #ee5a52 100%)',
+    background: '#a9ce3d',
     padding: '25px 20px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -343,7 +334,7 @@ logo_blue: {
   },
 
   navBtn: {
-    background: 'linear-gradient(135deg, #ff6b9d, #c44569)',
+    background: '#682179',
     border: '3px solid #fff',
     padding: '15px 25px',
     borderRadius: '50px',
@@ -354,7 +345,7 @@ logo_blue: {
     textTransform: 'uppercase',
     fontSize: '14px',
     letterSpacing: '1px',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    textShadow: '#9b749f',
     boxShadow: '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)',
     position: 'relative',
     overflow: 'hidden',
@@ -370,7 +361,7 @@ logo_blue: {
   videoPlayer: {
     flex: '2',
     minWidth: '300px',
-    background: 'linear-gradient(135deg, #ff6b9d 0%, #40e0d0 50%, #f8b500 100%)',
+    background: '#f3f869',
     borderRadius: '20px',
     padding: '25px',
     color: 'white',
@@ -449,7 +440,7 @@ logo_blue: {
   sidebar: {
     flex: '1',
     minWidth: '250px',
-    background: 'linear-gradient(135deg, #40e0d0 0%, #ee5a52 50%, #c44569 100%)',
+    background: '#3950a3',
     borderRadius: '20px',
     padding: '25px',
     border: '4px solid #fff',
@@ -468,7 +459,6 @@ logo_blue: {
   },
 
   videoItem: {
-    background: 'linear-gradient(135deg, #ff1744 0%, #ff6b9d 100%)',
     borderRadius: '15px',
     padding: '18px',
     marginBottom: '18px',
@@ -499,7 +489,7 @@ logo_blue: {
   },
 
   footer: {
-    background: 'linear-gradient(135deg, #c44569 0%, #ff1744 50%, #ff6b9d 100%)',
+    background: '#b6d559',
     color: 'white',
     textAlign: 'center',
     padding: '25px',
