@@ -1,4 +1,4 @@
-// Home.jsx - React Component Version - iCarly Style
+// Home.jsx - Responsive React Component Version - iCarly Style
 import React, { useState, useEffect } from 'react';
 
 const Home = () => {
@@ -160,22 +160,16 @@ const Home = () => {
           <div style={styles.videoPlayer}>
             {/* Video Screen */}
             <div style={styles.videoScreen}>
-              {isPlaying ? (
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/nTUQA-54W04"
-                  title="YouTube video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{ borderRadius: '15px' }}
-                ></iframe>
-              ) : (
-                <div style={styles.playButton} onClick={handlePlayVideo}>
-                  <div style={styles.playTriangle}></div>
-                </div>
-              )}
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/nTUQA-54W04"
+                title="YouTube video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ borderRadius: '15px' }}
+              ></iframe>
             </div>
             <h2 style={styles.videoTitle}>{currentVideo}</h2>
             <p style={styles.videoDescription}>
@@ -261,111 +255,126 @@ const Home = () => {
   );
 };
 
-// Styles Object - In React, we often put styles in a separate object
+// Responsive Styles Object
 const styles = {
-body: {
-  fontFamily: 'Comic Sans MS, cursive, Arial, sans-serif',
-  backgroundImage: 'url(Homebackgroundimage.png)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '150%',
-  zIndex: -1, // make it stay in the background
-},
+  body: {
+    fontFamily: 'Comic Sans MS, cursive, Arial, sans-serif',
+    backgroundImage: 'url(Homebackgroundimage.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    minHeight: '100vh',
+    zIndex: -1,
+    padding: '0',
+    margin: '0',
+    boxSizing: 'border-box',
+  },
 
-siteContainer: {
-  maxWidth: '1200px',
-  background: 'rgba(255, 255, 255, 0.98)',
-  borderRadius: '25px',
-  boxShadow: '0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 8px rgba(255, 255, 255, 0.1)',
-  overflow: 'hidden',
-  border: '5px solid #fff',
-  position: 'relative',
-  marginLeft: '360px',
-  marginTop: '50px', // 👈 this adds the spacing you're asking for
-},
-
+  siteContainer: {
+    maxWidth: '70vw',
+    width: '100%',
+    minWidth: '320px',
+    background: 'rgba(255, 255, 255, 0.98)',
+    borderRadius: 'clamp(15px, 2.5vw, 25px)',
+    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 8px rgba(255, 255, 255, 0.1)',
+    overflow: 'hidden',
+    border: 'clamp(3px, 0.5vw, 5px) solid #fff',
+    position: 'relative',
+    margin: 'clamp(20px, 5vh, 50px) auto',
+    padding: '0',
+    boxSizing: 'border-box',
+  },
 
   mainHeader: {
     background: '#a9ce3d',
-    padding: '25px 20px',
+    padding: 'clamp(15px, 3vw, 25px) clamp(10px, 2vw, 20px)',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
     position: 'relative',
     overflow: 'hidden',
-    borderBottom: '5px solid #fff',
+    borderBottom: 'clamp(3px, 0.5vw, 5px) solid #fff',
     boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+    gap: 'clamp(10px, 2vw, 20px)',
   },
 
   logo: {
-    fontSize: '3.5em',
+    fontSize: 'clamp(1.8em, 4vw, 3.5em)',
     fontWeight: '900',
-    letterSpacing: '2px',
+    letterSpacing: 'clamp(1px, 0.2vw, 2px)',
     transform: 'rotate(-2deg)',
-    padding: '10px 20px',
+    padding: 'clamp(5px, 1vw, 10px) clamp(10px, 2vw, 20px)',
     backdropFilter: 'blur(5px)',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
 
-logo_yellow: { 
-  color: '#fafd2e',
-  textShadow: '4px 4px 0px #621704, 6px 6px 10px',
-  WebkitBackgroundClip: 'text',
-  backgroundClip: 'text',
-},
+  logo_yellow: { 
+    color: '#fafd2e',
+    textShadow: 'clamp(2px, 0.5vw, 4px) clamp(2px, 0.5vw, 4px) 0px #621704, clamp(3px, 0.7vw, 6px) clamp(3px, 0.7vw, 6px) clamp(5px, 1vw, 10px)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+  },
 
-logo_blue: { 
-  color: '#18f4fa',
-  textShadow: '4px 4px 0px #0d0681, 6px 6px 10px',
-  WebkitBackgroundClip: 'text',
-  backgroundClip: 'text',
- },
+  logo_blue: { 
+    color: '#18f4fa',
+    textShadow: 'clamp(2px, 0.5vw, 4px) clamp(2px, 0.5vw, 4px) 0px #0d0681, clamp(3px, 0.7vw, 6px) clamp(3px, 0.7vw, 6px) clamp(5px, 1vw, 10px)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+  },
 
   navMenu: {
     display: 'flex',
-    gap: '12px',
+    gap: 'clamp(8px, 1.5vw, 12px)',
     flexWrap: 'wrap',
     alignItems: 'center',
+    justifyContent: 'center',
+    flex: '1',
+    minWidth: '0',
   },
 
   navBtn: {
     background: '#682179',
-    border: '3px solid #fff',
-    padding: '15px 25px',
-    borderRadius: '50px',
+    border: 'clamp(2px, 0.3vw, 3px) solid #fff',
+    padding: 'clamp(10px, 1.5vw, 15px) clamp(15px, 2.5vw, 25px)',
+    borderRadius: 'clamp(25px, 5vw, 50px)',
     color: '#fff',
     fontWeight: '800',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
     textTransform: 'uppercase',
-    fontSize: '14px',
-    letterSpacing: '1px',
+    fontSize: 'clamp(10px, 1.2vw, 14px)',
+    letterSpacing: 'clamp(0.5px, 0.1vw, 1px)',
     textShadow: '#9b749f',
     boxShadow: '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)',
     position: 'relative',
     overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    minWidth: 'max-content',
   },
 
   contentArea: {
     display: 'flex',
-    gap: '20px',
-    padding: '20px',
+    gap: 'clamp(15px, 2vw, 20px)',
+    padding: 'clamp(15px, 2vw, 20px)',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
 
   videoPlayer: {
     flex: '2',
-    minWidth: '300px',
+    minWidth: 'clamp(300px, 50vw, 600px)',
     background: '#f3f869',
-    borderRadius: '20px',
-    padding: '25px',
+    borderRadius: 'clamp(15px, 2vw, 20px)',
+    padding: 'clamp(20px, 3vw, 25px)',
     color: 'white',
-    border: '4px solid #fff',
+    border: 'clamp(3px, 0.5vw, 4px) solid #fff',
     boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)',
     position: 'relative',
     overflow: 'hidden',
@@ -373,21 +382,21 @@ logo_blue: {
 
   videoScreen: {
     background: 'linear-gradient(135deg, #000 0%, #333 100%)',
-    borderRadius: '15px',
-    height: '350px',
+    borderRadius: 'clamp(10px, 4vw, 15px)',
+    height: 'clamp(250px, 50vw, 600px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '20px',
+    marginBottom: 'clamp(15px, 2vw, 20px)',
     position: 'relative',
     overflow: 'hidden',
-    border: '5px solid #fff',
+    border: 'clamp(3px, 0.5vw, 5px) solid #fff',
     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5), inset 0 5px 15px rgba(255, 255, 255, 0.1)',
   },
 
   playButton: {
-    width: '100px',
-    height: '100px',
+    width: 'clamp(70px, 8vw, 100px)',
+    height: 'clamp(70px, 8vw, 100px)',
     background: 'linear-gradient(135deg, #ff6b9d, #f8b500)',
     borderRadius: '50%',
     display: 'flex',
@@ -395,7 +404,7 @@ logo_blue: {
     justifyContent: 'center',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    border: '4px solid #fff',
+    border: 'clamp(3px, 0.5vw, 4px) solid #fff',
     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.3)',
     animation: 'pulse 2s infinite',
   },
@@ -403,16 +412,16 @@ logo_blue: {
   playTriangle: {
     width: 0,
     height: 0,
-    borderLeft: '25px solid #fff',
-    borderTop: '15px solid transparent',
-    borderBottom: '15px solid transparent',
-    marginLeft: '8px',
+    borderLeft: 'clamp(18px, 2.5vw, 25px) solid #fff',
+    borderTop: 'clamp(11px, 1.5vw, 15px) solid transparent',
+    borderBottom: 'clamp(11px, 1.5vw, 15px) solid transparent',
+    marginLeft: 'clamp(6px, 0.8vw, 8px)',
     filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))',
   },
 
   playingIndicator: {
     color: '#ff6b9d',
-    fontSize: '2em',
+    fontSize: 'clamp(1.5em, 3vw, 2em)',
     textAlign: 'center',
     fontWeight: 'bold',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
@@ -420,68 +429,75 @@ logo_blue: {
   },
 
   videoTitle: {
-    fontSize: '2em',
-    marginBottom: '15px',
+    fontSize: 'clamp(1.5em, 3vw, 2em)',
+    marginBottom: 'clamp(10px, 1.5vw, 15px)',
     textAlign: 'center',
     fontWeight: '900',
     textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
-    letterSpacing: '1px',
+    letterSpacing: 'clamp(0.5px, 0.1vw, 1px)',
+    lineHeight: '1.2',
   },
 
   videoDescription: {
     textAlign: 'center',
     opacity: 0.95,
-    fontSize: '1.1em',
+    fontSize: 'clamp(1em, 1.8vw, 1.1em)',
     lineHeight: '1.6',
     fontWeight: '600',
     textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
   },
 
   sidebar: {
-    flex: '1',
-    minWidth: '250px',
+    flex: '0.5',
+    minWidth: 'clamp(250px, 30vw, 350px)',
+    maxHeight: '70vh',
     background: '#3950a3',
-    borderRadius: '20px',
-    padding: '25px',
-    border: '4px solid #fff',
+    borderRadius: 'clamp(15px, 2vw, 20px)',
+    padding: 'clamp(20px, 3vw, 25px)',
+    border: 'clamp(3px, 0.5vw, 4px) solid #fff',
     boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)',
+    overflow: 'auto',
+    alignSelf: 'center', // Change from 'flex-start' to 'center'
   },
 
   sidebarTitle: {
     color: '#fff',
-    fontSize: '1.8em',
-    marginBottom: '25px',
+    fontSize: 'clamp(1.4em, 2.5vw, 1.8em)',
+    marginBottom: 'clamp(20px, 3vw, 25px)',
     textAlign: 'center',
     fontWeight: '900',
     textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
-    letterSpacing: '1px',
+    letterSpacing: 'clamp(0.5px, 0.1vw, 1px)',
     textTransform: 'uppercase',
+    lineHeight: '1.2',
   },
 
   videoItem: {
-    borderRadius: '15px',
-    padding: '18px',
-    marginBottom: '18px',
+    borderRadius: 'clamp(10px, 4vw, 15px)',
+    padding: 'clamp(15px, 2.5vw, 18px)',
+    marginBottom: 'clamp(15px, 2.5vw, 18px)',
     cursor: 'pointer',
     transition: 'all 0.3s ease',
-    border: '3px solid #fff',
+    border: 'clamp(2px, 0.3vw, 3px) solid #fff',
     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)',
     position: 'relative',
     overflow: 'hidden',
+    background: '#274298',
   },
 
   videoItemTitle: {
     color: '#fff',
-    fontSize: '1.2em',
-    marginBottom: '8px',
+    fontSize: 'clamp(1.1em, 2vw, 1.2em)',
+    marginBottom: 'clamp(6px, 1vw, 8px)',
     fontWeight: '800',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    letterSpacing: '0.5px',
+    letterSpacing: 'clamp(0.3px, 0.05vw, 0.5px)',
+    lineHeight: '1.3',
   },
 
   videoItemDescription: {
     color: '#fff',
-    fontSize: '0.95em',
+    fontSize: 'clamp(0.9em, 1.5vw, 0.95em)',
     lineHeight: '1.5',
     fontWeight: '600',
     textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
@@ -492,14 +508,14 @@ logo_blue: {
     background: '#b6d559',
     color: 'white',
     textAlign: 'center',
-    padding: '25px',
-    marginTop: '25px',
+    padding: 'clamp(20px, 3vw, 25px)',
+    marginTop: 'clamp(20px, 3vw, 25px)',
     fontWeight: '700',
-    fontSize: '1.1em',
+    fontSize: 'clamp(1em, 1.8vw, 1.1em)',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-    letterSpacing: '1px',
-    border: '4px solid #fff',
-    borderRadius: '0 0 20px 20px',
+    letterSpacing: 'clamp(0.5px, 0.1vw, 1px)',
+    border: 'clamp(3px, 0.5vw, 4px) solid #fff',
+    borderRadius: '0 0 clamp(15px, 2vw, 20px) clamp(15px, 2vw, 20px)',
     boxShadow: '0 -5px 15px rgba(0, 0, 0, 0.2)',
   },
 };
