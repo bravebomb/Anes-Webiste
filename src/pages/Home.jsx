@@ -164,7 +164,7 @@ const Home = () => {
                 <iframe
                   width="100%"
                   height="100%"
-                  src="https://www.youtube.com/watch?v=t3vP021Zyik"
+                  src="https://www.youtube.com/embed/nTUQA-54W04"
                   title="YouTube video"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -193,12 +193,12 @@ const Home = () => {
               onClick={() => loadVideo('Cool Tutorial #1')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateX(8px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #40e0d0, #f8b500)';
+                e.target.style.background = '#384fa0';
                 e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 3px 12px rgba(255, 255, 255, 0.3)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateX(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff1744 0%, #ff6b9d 100%)';
+                e.target.style.background = '#274298';
                 e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)';
               }}
             >
@@ -214,12 +214,12 @@ const Home = () => {
               onClick={() => loadVideo('Fun Activity')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateX(8px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #f8b500, #ee5a52)';
+                e.target.style.background = '#384fa0';
                 e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 3px 12px rgba(255, 255, 255, 0.3)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateX(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff1744 0%, #ff6b9d 100%)';
+                e.target.style.background = '#274298';
                 e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)';
               }}
             >
@@ -235,12 +235,12 @@ const Home = () => {
               onClick={() => loadVideo('Latest News')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateX(8px) scale(1.05)';
-                e.target.style.background = 'linear-gradient(135deg, #ee5a52, #40e0d0)';
+                e.target.style.background = '#384fa0';
                 e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 3px 12px rgba(255, 255, 255, 0.3)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateX(0) scale(1)';
-                e.target.style.background = 'linear-gradient(135deg, #ff1744 0%, #ff6b9d 100%)';
+                e.target.style.background = '#274298';
                 e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)';
               }}
             >
