@@ -60,7 +60,7 @@ const Home = () => {
     // Navigate to different pages based on button name
     switch(buttonName) {
       case 'Bloggar':
-        navigate('bloggar');
+        navigate('/bloggar');
         break;
       case 'Bukcet list':
         navigate('/bucket-list');

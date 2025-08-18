@@ -282,7 +282,7 @@ const FilmSondag = () => {
 
                 <div style={styles.movieInfo}>
                   <h3 style={styles.movieTitle}>{upcomingMovie.title}</h3>
-                  <p style={styles.chosenBy}>Vald av {upcomingMovie.chosenBy}</p>
+                  <p style={styles.chosenBy}>Valdes av: {upcomingMovie.chosenBy}</p>
                 </div>
               </div>
 
@@ -494,12 +494,22 @@ const styles = {
   },
 
   sectionTitle: {
-    fontSize: "clamp(1.8em, 3.2vw, 2.8em)",
-    fontWeight: "800",
-    color: "#333",
-    marginBottom: "30px",
-    textAlign: "center",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
+  fontSize: '1.8em',
+  marginBottom: '12px',
+  textAlign: 'center',
+  fontWeight: '900',
+  color: '#f3f869', // White text
+  letterSpacing: '0.8px',
+  lineHeight: '1.2',
+  textShadow: 
+    // Thinner, more subtle stroke
+    '-1px -1px 0 #000, ' +
+    '1px -1px 0 #000, ' +
+    '-1px 1px 0 #000, ' +
+    '1px 1px 0 #000',
+  // Add these properties for smoother text rendering
+  WebkitFontSmoothing: 'antialiased',
+  MozOsxFontSmoothing: 'grayscale',
   },
 
   movieCard: {
@@ -586,11 +596,10 @@ const styles = {
   },
 
   chosenBy: {
-    fontSize: "clamp(1.3em, 2.5vw, 1.8em)",
-    fontWeight: "700",
+    fontSize: "clamp(1.3em, 2.5vw, 2em)",
+    fontWeight: "800",
     margin: "15px 0",
     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-    background: "rgba(255, 255, 255, 0.2)",
     padding: "10px 20px",
     borderRadius: "25px",
     display: "inline-block",

@@ -176,101 +176,36 @@ const Home = () => {
         </header>
 
         {/* Main Content Area */}
-        <main style={styles.contentArea}>
-          
-          {/* Video Player Section */}
-          <div style={styles.videoPlayer}>
-            {/* Video Screen */}
-            <div style={styles.videoScreen}>
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://www.youtube.com/embed/nTUQA-54W04"
-                title="YouTube video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ borderRadius: '15px' }}
-              ></iframe>
-            </div>
-            <h2 style={styles.videoTitle}>{currentVideo}</h2>
-            <p style={styles.videoDescription}>
-              This is where your main video content would be displayed. Click the play button to simulate playing!
-            </p>
-          </div>
-
-          {/* Sidebar */}
-          <aside style={styles.sidebar}>
-            <h2 style={styles.sidebarTitle}>More Videos</h2>
-            
-            {/* Video Thumbnail 1 */}
-            <div 
-              style={styles.videoItem} 
-              onClick={() => loadVideo('Cool Tutorial #1')}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateX(8px) scale(1.05)';
-                e.target.style.background = '#384fa0';
-                e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 3px 12px rgba(255, 255, 255, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateX(0) scale(1)';
-                e.target.style.background = '#274298';
-                e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)';
-              }}
-            >
-              <h3 style={styles.videoItemTitle}>🎨 Cool Tutorial #1</h3>
-              <p style={styles.videoItemDescription}>
-                Learn something amazing in this quick tutorial that will blow your mind! 🤯
-              </p>
-            </div>
-
-            {/* Video Thumbnail 2 */}
-            <div 
-              style={styles.videoItem} 
-              onClick={() => loadVideo('Fun Activity')}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateX(8px) scale(1.05)';
-                e.target.style.background = '#384fa0';
-                e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 3px 12px rgba(255, 255, 255, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateX(0) scale(1)';
-                e.target.style.background = '#274298';
-                e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)';
-              }}
-            >
-              <h3 style={styles.videoItemTitle}>🎉 Fun Activity</h3>
-              <p style={styles.videoItemDescription}>
-                Join us for this exciting activity that everyone will enjoy! ✨
-              </p>
-            </div>
-
-            {/* Video Thumbnail 3 */}
-            <div 
-              style={styles.videoItem} 
-              onClick={() => loadVideo('Latest News')}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateX(8px) scale(1.05)';
-                e.target.style.background = '#384fa0';
-                e.target.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.4), inset 0 3px 12px rgba(255, 255, 255, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateX(0) scale(1)';
-                e.target.style.background = '#274298';
-                e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 2px 8px rgba(255, 255, 255, 0.2)';
-              }}
-            >
-              <h3 style={styles.videoItemTitle}>📰 Latest News</h3>
-              <p style={styles.videoItemDescription}>
-                Stay updated with the latest happenings and important announcements! 🔥
-              </p>
-            </div>
-          </aside>
-        </main>
+<main style={styles.contentArea}>
+  {/* First Video Player Section */}
+  <div style={styles.boxes}>
+      <text style={styles.videoTitle}>{"TBD"}</text>
+  </div>
+  
+  {/* Second Video Player Section */}
+  <div style={styles.videoPlayer}>
+    <div>
+      <h2 style={styles.videoTitle}>{"Kika in senaste vloggen :3"}</h2>
+    </div>
+    <div style={styles.videoScreen}>
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://www.youtube.com/embed/nTUQA-54W04"
+        title="YouTube video"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        style={{ borderRadius: '15px' }}
+      ></iframe>
+    </div>
+    <h2 style={styles.videoTitle}>{"Examensbal 2025!!"}</h2>
+  </div>
+</main>
 
         {/* Footer */}
         <footer style={styles.footer}>
-          <p>&copy; 2025 MySite.com - Built with React!</p>
+          <p>&copy; 2025 Anesdelalic.com</p>
         </footer>
       </div>
     </div>
@@ -376,25 +311,45 @@ const styles = {
     minWidth: 'max-content',
   },
 
-  contentArea: {
-    display: 'flex',
-    gap: '25px',
-    padding: '25px',
-    alignItems: 'flex-start',
-  },
+contentArea: {
+  display: 'flex',
+  flexDirection: 'column', // Change to column layout
+  gap: '25px',
+  padding: '25px',
+  alignItems: 'center', // Center items horizontally
+},
 
-  videoPlayer: {
-    flex: '2',
-    minWidth: '700px',
-    background: '#f3f869',
-    borderRadius: '18px',
-    padding: '25px',
-    color: 'white',
-    border: '4px solid #fff',
-    boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)',
-    position: 'relative',
-    overflow: 'hidden',
-  },
+videoPlayer: {
+  width: '90%', // Set width instead of flex
+  background: '#f3f869',
+  borderRadius: '18px',
+  padding: '25px',
+  color: '#18f4fa',
+  textShadowColor: 'black',
+  textShadowRadius: 1,
+    textShadowOffset: { 
+      width: 2,
+      height: 2,
+    },
+  border: '4px solid #fff',
+  boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)',
+  position: 'relative',
+  overflow: 'hidden',
+  marginBottom: '20px', // Add spacing between video players
+},
+
+boxes:{
+  width: '90%', // Set width instead of flex
+  background: '#f3f869',
+  borderRadius: '18px',
+  padding: '25px',
+  color: 'black',
+  border: '4px solid #fff',
+  boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)',
+  position: 'relative',
+  overflow: 'hidden',
+  marginBottom: '20px', // Add spacing between video players
+},
 
   videoScreen: {
     background: 'linear-gradient(135deg, #000 0%, #333 100%)',
@@ -410,50 +365,39 @@ const styles = {
     boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5), inset 0 5px 15px rgba(255, 255, 255, 0.1)',
   },
 
-  videoTitle: {
-    fontSize: '1.8em', // Fixed size
-    marginBottom: '12px',
-    textAlign: 'center',
-    fontWeight: '900',
-    textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
-    letterSpacing: '0.8px',
-    lineHeight: '1.2',
-  },
+videoTitle: {
+  fontSize: '1.8em',
+  marginBottom: '12px',
+  textAlign: 'center',
+  fontWeight: '900',
+  color: '#fff', // White text
+  letterSpacing: '0.8px',
+  lineHeight: '1.2',
+  textShadow: 
+    // Thinner, more subtle stroke
+    '-1px -1px 0 #000, ' +
+    '1px -1px 0 #000, ' +
+    '-1px 1px 0 #000, ' +
+    '1px 1px 0 #000',
+  // Add these properties for smoother text rendering
+  WebkitFontSmoothing: 'antialiased',
+  MozOsxFontSmoothing: 'grayscale',
+},
 
-  videoDescription: {
-    textAlign: 'center',
-    opacity: 0.95,
-    fontSize: '1.1em', // Fixed size
-    lineHeight: '1.6',
-    fontWeight: '600',
-    textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
-  },
-
-  sidebar: {
-    flex: '0.6',
-    minWidth: '300px',
-    maxWidth: '350px',
-    maxHeight: '600px', // Fixed height
-    background: '#3950a3',
-    borderRadius: '18px',
-    padding: '22px',
-    border: '4px solid #fff',
-    boxShadow: '0 15px 30px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)',
-    overflow: 'auto',
-    alignSelf: 'flex-start',
-  },
-
-  sidebarTitle: {
-    color: '#fff',
-    fontSize: '1.6em', // Fixed size
-    marginBottom: '22px',
-    textAlign: 'center',
-    fontWeight: '900',
-    textShadow: '3px 3px 6px rgba(0, 0, 0, 0.5)',
-    letterSpacing: '0.8px',
-    textTransform: 'uppercase',
-    lineHeight: '1.2',
-  },
+videoDescription: {
+  textAlign: 'center',
+  opacity: 0.95,
+  fontSize: '1.1em',
+  lineHeight: '1.6',
+  fontWeight: '600',
+  textShadow: 
+    '-1px -1px 0 #000, ' +  // Top left
+    '1px -1px 0 #000, ' +   // Top right
+    '-1px 1px 0 #000, ' +   // Bottom left
+    '1px 1px 0 #000, ' +    // Bottom right
+    '0 0 2px rgba(0, 0, 0, 0.3)', // Original shadow
+  color: '#fff', // Make sure text color contrasts with the stroke
+},
 
   videoItem: {
     borderRadius: '12px',
