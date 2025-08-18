@@ -1,13 +1,15 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx'
-import Buy from './pages/Bloggar.jsx'
+import Bloggar from './pages/Bloggar.jsx'
+import Film from './pages/Film-Sondag.jsx'
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/bloggar" element={<Buy />} />
+      <Route path="/bloggar" element={<Bloggar />} />
+      <Route path="/film-sondag" element={<Film />} />
     </Routes>
   )
 }

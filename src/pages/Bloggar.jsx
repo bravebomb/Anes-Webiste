@@ -68,9 +68,11 @@ const Home = () => {
       case 'bilder':
         navigate('/gallery');
         break;
-      case 'Albins håla':
-        navigate('/halan');
+      case 'Film Söndag':
+        navigate('/film-sondag');
         break;
+      case 'Home':
+        navigate('/');
       default:
         console.log('Unknown navigation:', buttonName);
     }
@@ -104,8 +106,8 @@ const Home = () => {
       case 'bilder':
         navigate('/gallery');
         break;
-      case 'Albins håla':
-        navigate('/halan');
+      case 'Film sondag':
+        navigate('/test');
         break;
       default:
         console.log('Unknown navigation:', buttonName);
@@ -120,12 +122,22 @@ return (
         {/* Header Section */}
         <header style={styles.mainHeader}>
           {/* Logo */}
-          <div style={styles.logo}>
-            <span style={styles.logo_yellow}>A</span>
-            <span style={styles.logo_blue}>nesDelalic</span>
-            <span style={styles.logo_yellow}>.com</span>
-          </div>
-          
+          <button
+          onClick={() => handleNavClick('Home')}
+            style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            margin: 0,
+            cursor: 'pointer',
+          }}
+          >
+            <div style={styles.logo}>
+              <span style={styles.logo_yellow}>A</span>
+              <span style={styles.logo_blue}>nesDelalic</span>
+              <span style={styles.logo_yellow}>.com</span>
+            </div>
+          </button>
           {/* Navigation Menu */}
           <nav style={styles.navMenu}>
             <button 
@@ -178,7 +190,7 @@ return (
             </button>
             <button 
               style={styles.navBtn} 
-              onClick={() => handleNavClick('Albins håla')}
+              onClick={() => handleNavClick('Film Söndag')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px) scale(1.05)';
                 e.target.style.background = '#d7b7d4';
@@ -190,7 +202,7 @@ return (
                 e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
               }}
             >
-              Hålan
+              Film Söndag
             </button>
           </nav>
         </header>

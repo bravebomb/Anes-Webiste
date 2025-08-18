@@ -67,8 +67,8 @@ const Home = () => {
       case 'Bloggar':
         window.location.href = '/bloggar';
         break;
-      case 'Albins håla':
-        window.location.href = '/halan';
+      case 'Film Söndag':
+        window.location.href = '/film-Sondag';
         break;
       default:
         console.log('Unknown navigation:', buttonName);
@@ -158,7 +158,7 @@ const Home = () => {
             </button>
             <button 
               style={styles.navBtn} 
-              onClick={() => handleNavClick('Albins håla')}
+              onClick={() => handleNavClick('Film Söndag')}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-3px) scale(1.05)';
                 e.target.style.background = '#d7b7d4';
@@ -170,7 +170,7 @@ const Home = () => {
                 e.target.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)';
               }}
             >
-              Hålan
+              Film Söndag
             </button>
           </nav>
         </header>
