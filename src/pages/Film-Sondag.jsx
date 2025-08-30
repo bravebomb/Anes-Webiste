@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Upload, ChevronRight, Star, StarHalf } from "lucide-react";
 
-import MoviePoster from "/MoviePoster.jpg";
+import MoviePoster from "/idk.png";
 
 const FilmSondag = () => {
   // React Router navigation hook
@@ -10,22 +10,22 @@ const FilmSondag = () => {
 
   // State for upcoming movie
   const [upcomingMovie, setUpcomingMovie] = useState({
-    title: "Princess Mononoke",
-    chosenBy: "Albin",
+    title: "TBH",
+    chosenBy: "Anes",
     poster: MoviePoster,
   });
 
   // Previous movies data with reviews
   const [previousMovies, setPreviousMovies] = useState([
     {
-      title: "Flickan och kråkan",
-      chosenBy: "Hanna",
+      title: "Princess Mononoke",
+      chosenBy: "Albin", 
       expanded: false,
       reviews: [
-        { person: "Anes", rating: 3.5, comment: "Ganska rolig" },
-        { person: "Hannah", rating: 2, comment: "Inte min stil" },
-        { person: "Hanna", rating: 1.5, comment: "De borde ha kpop låtar i den!" },
-        { person: "Albin", rating: 5, comment: "Jag grät när kråkan blev skjuten" },
+        { person: "Anes", rating: 4.5, comment: "Jag gillar mer seriös Ghibli film, bra smiski" },
+        { person: "Hannah", rating: 3.5, comment: "bra film, kul för hela familjen. det var synd att vi bara hade en smiski kvar i slutet" },
+        { person: "Hanna", rating: 4.5, comment: "vargarna va sexiga och manshatet" },
+        { person: "Albin", rating: 4.5, comment: "men de stavade fel på function så den får ett poäng avdraget pga det" },
       ],
     },
   ]);
