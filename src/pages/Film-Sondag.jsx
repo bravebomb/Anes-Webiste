@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Upload, ChevronRight, Star, StarHalf } from "lucide-react";
+import { Upload, ChevronRight, Star, StarHalf, ExternalLink } from "lucide-react";
 
-import MoviePoster from "/idk.png";
+import MoviePoster from "/MoviePoster.jpg";
+import PrincessMononokePoster from "/princess-mononoke.jpg";
+import PhoenicianSchemePoster from "/phoenician-scheme.jpg";
+import RequiemPoster from "/requiem-for-a-dream.jpg";
+
 
 const FilmSondag = () => {
-  // React Router navigation hook
   const navigate = useNavigate();
+  const [currentDate, setCurrentDate] = useState('');
 
-  // State for upcoming movie
   const [upcomingMovie, setUpcomingMovie] = useState({
-    title: "TBH",
-    chosenBy: "Anes",
+    title: "Talk To Me",
+    chosenBy: "Hanna",
     poster: MoviePoster,
   });
 
-  // Previous movies data with reviews
   const [previousMovies, setPreviousMovies] = useState([
     {
       title: "Princess Mononoke",
       chosenBy: "Albin", 
       expanded: false,
+      date: "?",
+      poster: PrincessMononokePoster,
+      imdbRating: 8.4,
+      imdbUrl: "https://www.imdb.com/title/tt0119698/",
       reviews: [
         { person: "Anes", rating: 4.5, comment: "Jag gillar mer seriös Ghibli film, bra smiski" },
         { person: "Hannah", rating: 3.5, comment: "bra film, kul för hela familjen. det var synd att vi bara hade en smiski kvar i slutet" },
@@ -28,73 +34,125 @@ const FilmSondag = () => {
         { person: "Albin", rating: 4.5, comment: "men de stavade fel på function så den får ett poäng avdraget pga det" },
       ],
     },
+    {
+      title: "The Phoenician Scheme",
+      chosenBy: "Anes", 
+      expanded: false,
+      date: "2025-09-02",
+      poster: PhoenicianSchemePoster,
+      imdbRating: 6.7,
+      imdbUrl: "https://www.imdb.com/title/tt9866072/",
+      reviews: [
+        { person: "Anes", rating: 3.5, comment: "De lyckades göra en norsk sexig" },
+        { person: "Hannah", rating: 3.5, comment: "jag tyckte den var ascool att se på det kändes som att gå in på ett konstmuseum men filmens handling var inte så spännande" },
+        { person: "Hanna", rating: 4.5, comment: "väldigt vaccker gillar färgerna gillade storyn kul koncept och breaking bad" },
+        { person: "Albin", rating: 3.5, comment: "Fett bra. Jag + Bjorn = Sant <3" },
+      ],
+    },
+    {
+      title: "Requiem For A Dream",
+      chosenBy: "Hannah", 
+      expanded: false,
+      date: "2025-09-09",
+      poster: RequiemPoster,
+      imdbRating: 8.3,
+      imdbUrl: "https://www.imdb.com/title/tt0180093/",
+      reviews: [
+        { person: "Anes", rating: 4, comment: "Så artsy att ingen mådde bra" },
+        { person: "Hannah", rating: 4.5, comment: "jag älskar hur den är filmad/redigerad det är ascoolt men man fäller tre tårar från högra öga" },
+        { person: "Hanna", rating: 4, comment: "bra film mådde piss men också väldigt astetisk och cool men också traumatiskt" },
+        { person: "Albin", rating: 4, comment: "fördärvande sinnet" },
+      ],
+    },
   ]);
-
-  const people = ["Anes", "Hannah", "Hanna", "Albin"];
 
   useEffect(() => {
     console.log("🎬 Film Söndag component loaded!");
 
-    // Add custom animations
+
+        const updateDate = () => {
+  const now = new Date();
+  const options = { 
+    weekday: 'long',  
+    month: 'long', 
+    day: 'numeric' 
+  };
+  setCurrentDate(now.toLocaleDateString('sv-SE', options));
+  };
+
+// Update date immediately and then every minute
+updateDate();
+const dateInterval = setInterval(updateDate, 60000);
     const style = document.createElement("style");
-    style.setAttribute("data-film-sondag", "true");
+    style.setAttribute("data-film-sondag-2000s", "true");
     style.textContent = `
-      @keyframes movieFadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Bubblegum+Sans:wght@400&family=Bungee:wght@400&display=swap');
+      
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
       }
       
-      @keyframes posterGlow {
-        0% { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
-        50% { box-shadow: 0 8px 30px rgba(255, 107, 157, 0.6); }
-        100% { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); }
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
       }
       
-      .movie-card {
-        animation: movieFadeIn 0.8s ease-out;
+      @keyframes wiggle {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(-2deg); }
+        50% { transform: rotate(0deg); }
+        75% { transform: rotate(2deg); }
+        100% { transform: rotate(0deg); }
       }
       
-      .poster-container:hover {
-        animation: posterGlow 2s infinite;
+      @keyframes sparkle-spin {
+        0% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(180deg) scale(1.2); }
+        100% { transform: rotate(360deg) scale(1); }
       }
       
-      .upload-hover:hover {
-        background: rgba(255, 255, 255, 0.95) !important;
-        transform: scale(1.05);
+      .retro-button:hover {
+        animation: bounce 0.6s ease infinite;
       }
-
-      .movie-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      
+      .sparkle-text {
+        position: relative;
       }
-
-      .star-rating {
-        display: inline-flex;
-        align-items: center;
+      
+      .sparkle-text::before {
+        content: "✨";
+        position: absolute;
+        left: -25px;
+        animation: sparkle-spin 2s ease-in-out infinite;
       }
-
-      .review-section {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.5s ease-out;
+      
+      .sparkle-text::after {
+        content: "✨";
+        position: absolute;
+        right: -25px;
+        animation: sparkle-spin 2s ease-in-out infinite reverse;
       }
-
-      .review-section.expanded {
-        max-height: 500px;
+      
+      .movie-card-2000s:hover {
+        animation: wiggle 0.5s ease-in-out;
+      }
+      
+      .blink-text {
+        animation: blink 1.5s infinite;
       }
     `;
     document.head.appendChild(style);
 
     return () => {
-      // Cleanup
-      const existingStyle = document.querySelector("style[data-film-sondag]");
+      const existingStyle = document.querySelector("style[data-film-sondag-2000s]");
       if (existingStyle) {
         existingStyle.remove();
       }
     };
   }, []);
 
-  // Handle file upload for upcoming movie poster
   const handlePosterUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -106,7 +164,6 @@ const FilmSondag = () => {
     }
   };
 
-  // Toggle movie review expansion
   const toggleMovieExpansion = (index) => {
     setPreviousMovies((prev) =>
       prev.map((movie, i) =>
@@ -115,7 +172,6 @@ const FilmSondag = () => {
     );
   };
 
-  // Render star rating
   const renderStarRating = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -125,7 +181,7 @@ const FilmSondag = () => {
       stars.push(
         <Star
           key={`full-${i}`}
-          size={20}
+          size={16}
           fill="#FFD700"
           color="#FFD700"
           className="star-icon"
@@ -137,7 +193,7 @@ const FilmSondag = () => {
       stars.push(
         <StarHalf
           key="half"
-          size={20}
+          size={16}
           fill="#FFD700"
           color="#FFD700"
           className="star-icon"
@@ -150,7 +206,7 @@ const FilmSondag = () => {
       stars.push(
         <Star
           key={`empty-${i}`}
-          size={20}
+          size={16}
           color="#D3D3D3"
           className="star-icon"
         />
@@ -160,20 +216,15 @@ const FilmSondag = () => {
     return <div className="star-rating">{stars}</div>;
   };
 
-  // Function to handle navigation button clicks - using the same logic as Home.jsx
   const handleNavClick = (buttonName) => {
     console.log('Button clicked:', buttonName);
     
-    // Navigate to different pages based on button name
     switch(buttonName) {
       case 'Bloggar':
         navigate('/bloggar');
         break;
       case 'Bucket list':
         navigate('/bucket-list');
-        break;
-      case 'Vart är jag?':
-        navigate('/vart-ar-jag');
         break;
       case 'Film Söndag':
         navigate('/film-sondag');
@@ -188,578 +239,791 @@ const FilmSondag = () => {
 
   return (
     <div style={styles.body}>
-      <div style={styles.siteContainer}>
-        {/* Header Section */}
-        <header style={styles.mainHeader}>
+      <div style={styles.container}>
+        {/* Header */}
+        <div style={styles.header}>
           <button
             onClick={() => handleNavClick("Home")}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              margin: 0,
-              cursor: "pointer",
-            }}
+            style={styles.logoButton}
           >
             <div style={styles.logo}>
-              <span style={styles.logo_yellow}>A</span>
-              <span style={styles.logo_blue}>nesDelalic</span>
-              <span style={styles.logo_yellow}>.com</span>
+              <span style={styles.logoText}>AnesDelalic</span>
+              <span style={styles.logoCom}>.com</span>
             </div>
           </button>
+          
+          <div style={styles.headerRight}>
+            <div style={styles.dateDisplay}>
+              Idag är det {currentDate}
+            </div>
+          </div>
+        </div>
 
-          <nav style={styles.navMenu}>
-            {["Vart är jag?", "Bucket list", "Bloggar", "Film Söndag"].map(
-              (item) => (
-                <button
-                  key={item}
-                  style={styles.navBtn}
-                  onClick={() => handleNavClick(item)}
-                  onMouseEnter={(e) => {
-                    e.target.style.transform = "translateY(-3px) scale(1.05)";
-                    e.target.style.background = "#d7b7d4";
-                    e.target.style.boxShadow =
-                      "0 10px 25px rgba(0, 0, 0, 0.4), inset 0 2px 8px rgba(255, 255, 255, 0.4)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.transform = "translateY(0) scale(1)";
-                    e.target.style.background = "#6d2777";
-                    e.target.style.boxShadow =
-                      "0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)";
-                  }}
-                >
-                  {item}
-                </button>
-              )
-            )}
-          </nav>
-        </header>
+        {/* Navigation Bar */}
+        <div style={styles.navBar}>
+          {[
+            { name: 'Home', icon: '📍', color: '#FF6B9D' },
+            { name: 'Bucket list', icon: '📋', color: '#7DD3FC' },
+            { name: 'Bloggar', icon: '📝', color: '#A9CE3D' },
+            { name: 'Film Söndag', icon: '🎬', color: '#F8B500' },
+          ].map((item) => (
+            <button
+              key={item.name}
+              onClick={() => handleNavClick(item.name)}
+              className="retro-button"
+              style={{
+                ...styles.navButton,
+                background: item.color,
+              }}
+            >
+              <span style={styles.navButtonIcon}>{item.icon}</span>
+              <span style={styles.navButtonText}>{item.name}</span>
+            </button>
+          ))}
+        </div>
 
-        {/* Main Content */}
-        <main style={styles.contentArea}>
-          <div style={styles.mainContent}>
-            <h1 style={styles.welcomeTitle}>Välkommen till Film Söndag!</h1>
-            <p style={styles.welcomeText}>
-              Här kan du se kommande film eller filmer vi har sett! + våra
-              omdömen!
-            </p>
-
-            {/* Upcoming Movie Section */}
-            <div style={styles.upcomingSection}>
-              <h2 style={styles.sectionTitle}>Veckans film är.....</h2>
-
-              <div className="movie-card" style={styles.movieCard}>
-                <div
-                  className="poster-container"
-                  style={styles.posterContainer}
-                >
-                  {upcomingMovie.poster ? (
-                    <img
-                      src={upcomingMovie.poster}
-                      alt={upcomingMovie.title}
-                      style={styles.moviePoster}
-                    />
-                  ) : (
-                    <div
-                      style={styles.posterPlaceholder}
-                      className="upload-hover"
-                    >
-                      <label style={styles.uploadLabel}>
-                        <Upload size={40} color="#666" />
-                        <span style={styles.uploadText}>
-                          Ladda upp affisch
-                        </span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handlePosterUpload}
-                          style={{ display: "none" }}
-                        />
-                      </label>
-                    </div>
-                  )}
-                </div>
-
-                <div style={styles.movieInfo}>
-                  <h3 style={styles.movieTitle}>{upcomingMovie.title}</h3>
-                  <p style={styles.chosenBy}>Valdes av: {upcomingMovie.chosenBy}</p>
-                </div>
+        {/* Main Content Area */}
+        <div style={styles.mainContent}>
+          
+          {/* Left Sidebar */}
+          <div style={styles.sidebar}>
+            <div style={styles.sidebarWidget}>
+              <div style={styles.widgetHeader}>
+                <span className="sparkle-text">Veckans Film!</span>
               </div>
-
-              {/* Movie Night Info */}
-              <div style={styles.movieNightInfo}>
+              <div style={styles.widgetContent}>
+                <div className="movie-card-2000s" style={styles.upcomingMovieCard}>
+                  <div style={styles.posterContainer}>
+                    {upcomingMovie.poster ? (
+                      <img
+                        src={upcomingMovie.poster}
+                        alt={upcomingMovie.title}
+                        style={styles.upcomingPoster}
+                      />
+                    ) : (
+                      <div style={styles.posterPlaceholder}>
+                        <label style={styles.uploadLabel}>
+                          <Upload size={20} color="#666" />
+                          <span style={styles.uploadText}>Ladda upp</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePosterUpload}
+                            style={{ display: "none" }}
+                          />
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                  <div style={styles.upcomingInfo}>
+                    <h3 style={styles.upcomingTitle}>{upcomingMovie.title}</h3>
+                    <p style={styles.upcomingChosen}>Chosen by: {upcomingMovie.chosenBy}</p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Previous Movies Section */}
-            <div style={styles.previousSection}>
-              <h2 style={styles.sectionTitle}>Se tidigare filmer</h2>
+            <div style={styles.sidebarWidget}>
+              <div style={styles.widgetHeader}>
+                <span className="blink-text">NÄST PÅ TUR</span>
+              </div>
+              <div style={styles.widgetContent}>
+                <div style={styles.turnOrder}>
+                  {['Albin', 'Anes', 'Hannah'].map((person, index) => (
+                    <div key={person} style={styles.turnItem}>
+                      {index + 1}. {person}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
 
-              <div style={styles.moviesList}>
+          {/* Center Content */}
+          <div style={styles.centerContent}>
+            <div style={styles.contentBox}>
+              <div style={styles.contentHeader}>
+                🎬 FILM SÖNDAG HIGHLIGHTS! 🎬
+              </div>
+              
+              <div style={styles.welcomeSection}>
+                <h1 style={styles.welcomeTitle}>
+                  Välkommen till Film "Söndag"!
+                </h1>
+                <p style={styles.welcomeText}>
+                  Vi försöker kolla på en film tillsammans i veckan där en person i taget får välja film! 
+                  <span className="blink-text"> ✨ KOLLA IN VÅRA REVIEWS NEDAN! ✨</span>
+                </p>
+              </div>
+
+              {/* Previous Movies Section */}
+              <div style={styles.moviesSection}>
+                <div style={styles.sectionTitle}>
+                  🌟 TIDIGARE FILMER & REVIEWS 🌟
+                </div>
+                
                 {previousMovies.map((movie, index) => (
-                  <div key={index}>
+                  <div key={index} style={styles.movieContainer}>
                     <div
-                      className="movie-item"
-                      style={styles.movieItem}
+                      style={styles.movieHeader}
                       onClick={() => toggleMovieExpansion(index)}
                     >
-                      <div style={styles.movieItemContent}>
-                        <h3 style={styles.movieItemTitle}>{movie.title}</h3>
-                        <p style={styles.movieItemChosen}>
-                          ({movie.chosenBy})
-                        </p>
+                      <div style={styles.movieHeaderLeft}>
+                        <img 
+                          src={movie.poster} 
+                          alt={movie.title}
+                          style={styles.movieThumbnail}
+                        />
+                        <div style={styles.movieHeaderInfo}>
+                          <h3 style={styles.movieHeaderTitle}>{movie.title}</h3>
+                          <p style={styles.movieHeaderMeta}>
+                            Chosen by: {movie.chosenBy} • Date: {movie.date}
+                          </p>
+                        </div>
                       </div>
-                      <ChevronRight
-                        size={24}
-                        color="#666"
-                        style={{
-                          ...styles.chevron,
-                          transform: movie.expanded
-                            ? "rotate(90deg)"
-                            : "rotate(0deg)",
-                        }}
-                      />
+                      <div style={styles.movieHeaderRight}>
+                        <div style={styles.expandButton}>
+                          {movie.expanded ? '👇 HIDE' : '👀 SHOW REVIEWS'}
+                        </div>
+                      </div>
                     </div>
 
-                    <div
-                      className={`review-section ${
-                        movie.expanded ? "expanded" : ""
-                      }`}
-                      style={{
-                        ...styles.reviewSection,
-                        maxHeight: movie.expanded ? "500px" : "0",
-                      }}
-                    >
+                    {movie.expanded && (
                       <div style={styles.reviewsContainer}>
-                        {movie.reviews.map((review, reviewIndex) => (
-                          <div key={reviewIndex} style={styles.reviewItem}>
-                            <div style={styles.reviewHeader}>
-                              <h4 style={styles.reviewerName}>
-                                {review.person}
-                              </h4>
-                              {renderStarRating(review.rating)}
-                            </div>
-                            {review.comment && (
-                              <p style={styles.reviewComment}>
+                        <div style={styles.reviewsHeader}>
+                          💭 VÅRA REVIEWS:
+                        </div>
+                        
+                        {/* IMDB Link in expanded view */}
+                        <div style={styles.imdbSection}>
+                          <a
+                            href={movie.imdbUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={styles.imdbLinkExpanded}
+                          >
+                            <span style={styles.imdbIcon}>🎭</span>
+                            <span style={styles.imdbText}>Check it out on IMDb!</span>
+                            <span style={styles.imdbRating}>⭐ {movie.imdbRating}/10</span>
+                            <ExternalLink size={16} style={{ marginLeft: '8px' }} />
+                          </a>
+                        </div>
+
+                        <div style={styles.reviewsList}>
+                          {movie.reviews.map((review, reviewIndex) => (
+                            <div key={reviewIndex} style={styles.reviewItem}>
+                              <div style={styles.reviewerInfo}>
+                                <span style={styles.reviewerName}>{review.person}:</span>
+                                <div style={styles.reviewRating}>
+                                  {renderStarRating(review.rating)}
+                                </div>
+                              </div>
+                              <div style={styles.reviewComment}>
                                 "{review.comment}"
-                              </p>
-                            )}
-                          </div>
-                        ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </main>
+
+          {/* Right Sidebar */}
+          <div style={styles.rightSidebar}>
+            <div style={styles.sidebarWidget}>
+              <div style={styles.widgetHeader}>
+                <span>Filmfakta!</span>
+              </div>
+              <div style={styles.widgetContent}>
+                <div style={styles.factBox}>
+                  <p style={styles.factText}>
+                    🎭 Vi har kollat på {previousMovies.length} filmer hittills!
+                  </p>
+                  <p style={styles.factText}>
+                    🌟 Genomsnittligt betyg: {(
+                      previousMovies
+                        .flatMap(m => m.reviews)
+                        .reduce((sum, r) => sum + r.rating, 0) /
+                      previousMovies.flatMap(m => m.reviews).length
+                    ).toFixed(1)} stjärnor!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.sidebarWidget}>
+              <div style={styles.widgetHeader}>
+                <span className="blink-text">Random Facts!</span>
+              </div>
+              <div style={styles.widgetContent}>
+                <div style={styles.randomFacts}>
+                  <p style={styles.factText}>🍿 Popcorn was invented in 1885!</p>
+                  <p style={styles.factText}>🎬 The first movie theater opened in 1905!</p>
+                  <p style={styles.factText}>📽️ Movies used to be silent!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Footer */}
-        <footer style={styles.footer}>
-          <p>&copy; 2025 AnesDelalic.com - Film Söndag! 🎬</p>
-        </footer>
+        <div style={styles.footer}>
+          <div style={styles.footerContent}>
+            <span>© 2025 AnesDelalic.com - Film Söndag Edition! 🎬</span>
+            <span className="blink-text">✨ Från Karlstad till Kungälv, vi levererar ✨</span>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-// Styles
+// Updated styles with clean white background
 const styles = {
   body: {
-    fontFamily: "Comic Sans MS, cursive, Arial, sans-serif",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    minHeight: "100vh",
-    zIndex: -1,
-    padding: "0",
-    margin: "0",
-    boxSizing: "border-box",
+    fontFamily: "'Fredoka One', 'Bubblegum Sans', 'Comic Sans MS', cursive",
+    backgroundImage: 'url(Homebackgroundimage.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    minHeight: '100vh',
+    margin: 0,
+    padding: '10px',
+    boxSizing: 'border-box',
   },
 
-  siteContainer: {
-    maxWidth: "70vw",
-    width: "100%",
-    minWidth: "320px",
-    background: "rgba(255, 255, 255, 0.98)",
-    borderRadius: "clamp(15px, 2.5vw, 25px)",
-    boxShadow:
-      "0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 8px rgba(255, 255, 255, 0.1)",
-    overflow: "hidden",
-    border: "clamp(3px, 0.5vw, 5px) solid #fff",
-    position: "relative",
-    margin: "clamp(20px, 5vh, 50px) auto",
-    padding: "0",
-    boxSizing: "border-box",
+  container: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    background: '#FFFFFF',
+    border: '5px solid #FF69B4',
+    borderRadius: '20px',
+    overflow: 'hidden',
+    boxShadow: '0 0 30px rgba(255, 105, 180, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.8)',
   },
 
-  mainHeader: {
-    background: "#a9ce3d",
-    padding: "clamp(15px, 3vw, 25px) clamp(10px, 2vw, 20px)",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexWrap: "wrap",
-    position: "relative",
-    overflow: "hidden",
-    borderBottom: "clamp(3px, 0.5vw, 5px) solid #fff",
-    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.3)",
-    gap: "clamp(10px, 2vw, 20px)",
+  header: {
+    background: 'linear-gradient(45deg, #FF69B4, #FF1493, #FF69B4)',
+    padding: '15px 20px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottom: '3px solid #FF1493',
+    boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.3)',
+  },
+
+  logoButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
   },
 
   logo: {
-    fontSize: "clamp(1.8em, 4vw, 3.5em)",
-    fontWeight: "900",
-    letterSpacing: "clamp(1px, 0.2vw, 2px)",
-    transform: "rotate(-2deg)",
-    padding: "clamp(5px, 1vw, 10px) clamp(10px, 2vw, 20px)",
-    backdropFilter: "blur(5px)",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    display: 'flex',
+    alignItems: 'center',
   },
 
-  logo_yellow: {
-    color: "#fafd2e",
-    textShadow:
-      "clamp(2px, 0.5vw, 4px) clamp(2px, 0.5vw, 4px) 0px #621704, clamp(3px, 0.7vw, 6px) clamp(3px, 0.7vw, 6px) clamp(5px, 1vw, 10px)",
+  logoText: {
+    fontSize: '32px',
+    fontFamily: "'Bungee', 'Fredoka One', cursive",
+    color: '#FFD700',
+    textShadow: '3px 3px 0 #FF1493, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+    letterSpacing: '2px',
   },
 
-  logo_blue: {
-    color: "#18f4fa",
-    textShadow:
-      "clamp(2px, 0.5vw, 4px) clamp(2px, 0.5vw, 4px) 0px #0d0681, clamp(3px, 0.7vw, 6px) clamp(3px, 0.7vw, 6px) clamp(5px, 1vw, 10px)",
+  logoCom: {
+    fontSize: '24px',
+    fontFamily: "'Bungee', 'Fredoka One', cursive",
+    color: '#00BFFF',
+    textShadow: '2px 2px 0 #FF1493, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
   },
 
-  navMenu: {
-    display: "flex",
-    gap: "clamp(8px, 1.5vw, 12px)",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    flex: "1",
-    minWidth: "0",
+  headerRight: {
+    display: 'flex',
+    alignItems: 'center',
   },
 
-  navBtn: {
-    background: "#682179",
-    border: "clamp(2px, 0.3vw, 3px) solid #fff",
-    padding: "clamp(10px, 1.5vw, 15px) clamp(15px, 2.5vw, 25px)",
-    borderRadius: "clamp(25px, 5vw, 50px)",
-    color: "#fff",
-    fontWeight: "800",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    textTransform: "uppercase",
-    fontSize: "clamp(10px, 1.2vw, 14px)",
-    letterSpacing: "clamp(0.5px, 0.1vw, 1px)",
-    boxShadow:
-      "0 6px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.3)",
-    whiteSpace: "nowrap",
+  dateDisplay: {
+    background: 'rgba(255, 255, 255, 0.9)',
+    color: '#FF1493',
+    padding: '10px 20px',
+    borderRadius: '25px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    border: '3px solid #FFFFFF',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    fontFamily: "'Fredoka One', cursive",
   },
 
-  contentArea: {
-    padding: "clamp(20px, 3vw, 40px)",
-    minHeight: "60vh",
+  navBar: {
+    background: 'linear-gradient(90deg, #32CD32, #00BFFF, #FFD700, #FF69B4)',
+    padding: '10px',
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    gap: '10px',
+    borderBottom: '3px solid #FF1493',
+  },
+
+  navButton: {
+    border: '3px solid #FFFFFF',
+    borderRadius: '15px',
+    padding: '12px 20px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.3)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.3s ease',
+  },
+
+  navButtonIcon: {
+    fontSize: '16px',
+  },
+
+  navButtonText: {
+    fontSize: '12px',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
   },
 
   mainContent: {
-    width: "100%",
+    display: 'grid',
+    gridTemplateColumns: '250px 1fr 200px',
+    gap: '15px',
+    padding: '15px',
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 105, 180, 0.1) 50%, rgba(0, 191, 255, 0.1) 100%)',
+    minHeight: '500px',
   },
 
-  welcomeTitle: {
-    fontSize: "clamp(2.2em, 4vw, 3.2em)",
-    marginBottom: "15px",
-    textAlign: "center",
-    fontWeight: "900",
-    color: "#333",
-    textShadow: "3px 3px 6px rgba(0, 0, 0, 0.1)",
+  sidebar: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
   },
 
-  welcomeText: {
-    fontSize: "clamp(1.1em, 2vw, 1.4em)",
-    textAlign: "center",
-    color: "#666",
-    lineHeight: "1.6",
-    marginBottom: "40px",
-    fontWeight: "500",
+  rightSidebar: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
   },
 
-  upcomingSection: {
-    marginBottom: "40px",
-    textAlign: "center",
+  sidebarWidget: {
+    background: '#FFFFFF',
+    border: '3px solid #FF69B4',
+    borderRadius: '15px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 8px rgba(255, 105, 180, 0.3)',
   },
 
-  sectionTitle: {
-  fontSize: '1.8em',
-  marginBottom: '12px',
-  textAlign: 'center',
-  fontWeight: '900',
-  color: '#f3f869', // White text
-  letterSpacing: '0.8px',
-  lineHeight: '1.2',
-  textShadow: 
-    // Thinner, more subtle stroke
-    '-1px -1px 0 #000, ' +
-    '1px -1px 0 #000, ' +
-    '-1px 1px 0 #000, ' +
-    '1px 1px 0 #000',
-  // Add these properties for smoother text rendering
-  WebkitFontSmoothing: 'antialiased',
-  MozOsxFontSmoothing: 'grayscale',
+  widgetHeader: {
+    background: 'linear-gradient(45deg, #FF69B4, #FF1493)',
+    color: '#FFFFFF',
+    padding: '10px 15px',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadow: '1px 1px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
   },
 
-  movieCard: {
-    display: "flex",
-    gap: "30px",
-    background: "linear-gradient(135deg, #ff6b9d 0%, #f8b500 100%)",
-    borderRadius: "25px",
-    padding: "30px",
-    alignItems: "center",
-    justifyContent: "center",
-    flexWrap: "wrap",
-    boxShadow:
-      "0 15px 40px rgba(0, 0, 0, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.2)",
-    border: "4px solid #fff",
-    position: "relative",
-    overflow: "hidden",
+  widgetContent: {
+    padding: '15px',
+  },
+
+  upcomingMovieCard: {
+    textAlign: 'center',
   },
 
   posterContainer: {
-    width: "clamp(180px, 25vw, 240px)",
-    height: "clamp(270px, 37.5vw, 360px)",
-    borderRadius: "20px",
-    overflow: "hidden",
-    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.4)",
-    border: "3px solid #fff",
-    transition: "all 0.3s ease",
+    width: '120px',
+    height: '180px',
+    margin: '0 auto 10px',
+    border: '3px solid #FF1493',
+    borderRadius: '10px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
   },
 
-  moviePoster: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    transition: "transform 0.3s ease",
+  upcomingPoster: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
 
   posterPlaceholder: {
-    width: "100%",
-    height: "100%",
-    background: "rgba(255, 255, 255, 0.9)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    color: "#666",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    border: "2px dashed #ccc",
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(45deg, #f0f0f0, #e0e0e0)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
   },
 
   uploadLabel: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "15px",
-    cursor: "pointer",
-    padding: "30px",
-    borderRadius: "15px",
-    transition: "all 0.3s ease",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '5px',
+    cursor: 'pointer',
+    color: '#666',
+    fontSize: '12px',
   },
 
   uploadText: {
-    fontSize: "clamp(14px, 1.5vw, 18px)",
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: 'bold',
   },
 
-  movieInfo: {
-    flex: "1",
-    textAlign: "center",
-    color: "#fff",
-    minWidth: "300px",
+  upcomingInfo: {
+    textAlign: 'center',
   },
 
-  movieTitle: {
-    fontSize: "clamp(2.5em, 5vw, 4em)",
-    fontWeight: "900",
-    margin: "0 0 15px 0",
-    textShadow: "4px 4px 8px rgba(0, 0, 0, 0.5)",
-    letterSpacing: "2px",
-    textTransform: "uppercase",
+  upcomingTitle: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#FF1493',
+    margin: '0 0 5px 0',
+    fontFamily: "'Fredoka One', cursive",
   },
 
-  chosenBy: {
-    fontSize: "clamp(1.3em, 2.5vw, 2em)",
-    fontWeight: "800",
-    margin: "15px 0",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-    padding: "10px 20px",
-    borderRadius: "25px",
-    display: "inline-block",
+  upcomingChosen: {
+    fontSize: '12px',
+    color: '#666',
+    margin: '0',
+    fontWeight: 'bold',
   },
 
-  movieDate: {
-    fontSize: "clamp(1.1em, 2vw, 1.4em)",
-    fontWeight: "600",
-    margin: "15px 0 25px 0",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-    background: "rgba(0, 0, 0, 0.2)",
-    padding: "8px 16px",
-    borderRadius: "20px",
-    display: "inline-block",
+  turnOrder: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
   },
 
-  movieNightInfo: {
-    marginTop: "40px",
-    display: "flex",
-    justifyContent: "center",
+  turnItem: {
+    background: 'linear-gradient(45deg, #FF69B4, #FF1493)',
+    color: '#FFFFFF',
+    padding: '8px 12px',
+    borderRadius: '20px',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadow: '1px 1px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+    border: '2px solid #FFFFFF',
   },
 
-  infoCard: {
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    borderRadius: "20px",
-    padding: "25px",
-    color: "#fff",
-    textAlign: "center",
-    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
-    border: "3px solid #fff",
-    maxWidth: "400px",
+  centerContent: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 
-  infoTitle: {
-    fontSize: "clamp(1.3em, 2.2vw, 1.6em)",
-    fontWeight: "800",
-    margin: "0 0 15px 0",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+  contentBox: {
+    background: '#FFFFFF',
+    border: '4px solid #00BFFF',
+    borderRadius: '20px',
+    overflow: 'hidden',
+    boxShadow: '0 8px 16px rgba(0, 191, 255, 0.4)',
   },
 
-  infoText: {
-    fontSize: "clamp(1em, 1.8vw, 1.2em)",
-    fontWeight: "600",
-    margin: "8px 0",
-    lineHeight: "1.5",
-    textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+  contentHeader: {
+    background: 'linear-gradient(45deg, #00BFFF, #32CD32, #FFD700)',
+    color: '#FFFFFF',
+    padding: '15px',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+    letterSpacing: '2px',
   },
 
-  // Previous Movies Section Styles
-  previousSection: {
-    marginTop: "50px",
-    textAlign: "center",
+  welcomeSection: {
+    padding: '20px',
+    textAlign: 'center',
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 215, 0, 0.1) 100%)',
   },
 
-  moviesList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-    maxWidth: "600px",
-    margin: "0 auto",
+  welcomeTitle: {
+    fontSize: '28px',
+    fontWeight: 'bold',
+    color: '#FF1493',
+    margin: '0 0 15px 0',
+    textShadow: '3px 3px 0 #FFD700, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+    fontFamily: "'Bungee', 'Fredoka One', cursive",
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
   },
 
-  movieItem: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    background: "rgba(255, 255, 255, 0.9)",
-    borderRadius: "15px",
-    padding: "20px 25px",
-    boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)",
-    border: "2px solid #f0f0f0",
-    transition: "all 0.3s ease",
-    cursor: "pointer",
+  welcomeText: {
+    fontSize: '16px',
+    color: '#333',
+    lineHeight: '1.5',
+    fontWeight: 'bold',
+    fontFamily: "'Fredoka One', cursive",
   },
 
-  movieItemContent: {
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-    flex: "1",
+  moviesSection: {
+    padding: '0 20px 20px',
   },
 
-  movieItemTitle: {
-    fontSize: "clamp(1.1em, 2vw, 1.3em)",
-    fontWeight: "700",
-    color: "#333",
-    margin: "0",
+  sectionTitle: {
+    background: 'linear-gradient(45deg, #FF69B4, #FFD700, #00BFFF)',
+    color: '#FFFFFF',
+    padding: '15px',
+    margin: '0 0 20px 0',
+    borderRadius: '15px',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+    border: '3px solid #FF1493',
+    boxShadow: '0 4px 8px rgba(255, 105, 180, 0.4)',
   },
 
-  movieItemChosen: {
-    fontSize: "clamp(1em, 1.8vw, 1.1em)",
-    color: "#666",
-    margin: "0",
-    fontWeight: "500",
+  movieContainer: {
+    background: '#FFFFFF',
+    border: '3px solid #404c8c',
+    borderRadius: '15px',
+    marginBottom: '15px',
+    overflow: 'hidden',
+    boxShadow: '0 4px 8px rgba(50, 205, 50, 0.3)',
   },
 
-  chevron: {
-    transition: "transform 0.3s ease",
+  movieHeader: {
+    background: '#404c8c',
+    padding: '15px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
   },
 
-  // Review section styles
-  reviewSection: {
-    overflow: "hidden",
-    transition: "max-height 0.5s ease-out",
-    background: "rgba(245, 245, 245, 0.9)",
-    borderRadius: "0 0 15px 15px",
-    marginTop: "-5px",
-    boxShadow: "0 8px 15px rgba(0, 0, 0, 0.1)",
+  movieHeaderLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '15px',
+  },
+
+  movieThumbnail: {
+    width: '60px',
+    height: '90px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+    border: '2px solid #FFFFFF',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+  },
+
+  movieHeaderInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
+  movieHeaderTitle: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    margin: '0 0 5px 0',
+    textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+  },
+
+  movieHeaderMeta: {
+    fontSize: '14px',
+    color: '#FFFFFF',
+    margin: '0',
+    fontWeight: 'bold',
+    textShadow: '1px 1px 0 rgba(0, 0, 0, 0.5)',
+  },
+
+  movieHeaderRight: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+
+  expandButton: {
+    background: '#FFD700',
+    color: '#000',
+    padding: '10px 15px',
+    borderRadius: '20px',
+    fontSize: '12px',
+    fontWeight: 'bold',
+    border: '2px solid #FF8C00',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+    fontFamily: "'Fredoka One', cursive",
   },
 
   reviewsContainer: {
-    padding: "20px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(50, 205, 50, 0.1) 100%)',
+    padding: '20px',
+  },
+
+  reviewsHeader: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#FF1493',
+    marginBottom: '15px',
+    textAlign: 'center',
+    fontFamily: "'Fredoka One', cursive",
+    textShadow: '1px 1px 0 rgba(0, 0, 0, 0.2)',
+  },
+
+  imdbSection: {
+    textAlign: 'center',
+    marginBottom: '20px',
+    padding: '15px',
+    background: 'rgba(255, 215, 0, 0.1)',
+    borderRadius: '15px',
+    border: '2px solid #FFD700',
+  },
+
+  imdbLinkExpanded: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '10px',
+    background: 'linear-gradient(45deg, #F5C518, #E6AC00)',
+    color: '#000000',
+    padding: '12px 20px',
+    borderRadius: '25px',
+    textDecoration: 'none',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    border: '3px solid #FFFFFF',
+    boxShadow: '0 4px 12px rgba(245, 197, 24, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+    transition: 'all 0.3s ease',
+  },
+
+  imdbIcon: {
+    fontSize: '18px',
+  },
+
+  imdbText: {
+    fontSize: '14px',
+    fontWeight: 'bold',
+  },
+
+  imdbRating: {
+    fontSize: '14px',
+    fontWeight: 'bold',
+    background: 'rgba(255, 255, 255, 0.3)',
+    padding: '4px 8px',
+    borderRadius: '15px',
+  },
+
+  reviewsList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
   },
 
   reviewItem: {
-    background: "white",
-    borderRadius: "12px",
-    padding: "15px",
-    boxShadow: "0 3px 10px rgba(0, 0, 0, 0.08)",
-    border: "1px solid #eee",
+    background: '#FFFFFF',
+    border: '2px solid #FFD700',
+    borderRadius: '12px',
+    padding: '12px',
+    boxShadow: '0 2px 4px rgba(255, 215, 0, 0.3)',
   },
 
-  reviewHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "8px",
+  reviewerInfo: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '8px',
   },
 
   reviewerName: {
-    fontSize: "clamp(1em, 1.8vw, 1.2em)",
-    fontWeight: "700",
-    color: "#333",
-    margin: "0",
+    fontSize: '14px',
+    fontWeight: 'bold',
+    color: '#FF1493',
+    fontFamily: "'Fredoka One', cursive",
+  },
+
+  reviewRating: {
+    display: 'flex',
+    gap: '2px',
   },
 
   reviewComment: {
-    fontSize: "clamp(0.9em, 1.6vw, 1em)",
-    color: "#666",
-    fontStyle: "italic",
-    margin: "5px 0 0 0",
-    lineHeight: "1.4",
+    fontSize: '13px',
+    color: '#333',
+    fontStyle: 'italic',
+    lineHeight: '1.4',
+    fontWeight: 'bold',
+  },
+
+  factBox: {
+    background: 'linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(50, 205, 50, 0.2))',
+    padding: '15px',
+    borderRadius: '10px',
+    border: '2px solid #FFD700',
+  },
+
+  factText: {
+    fontSize: '12px',
+    color: '#333',
+    margin: '0 0 8px 0',
+    fontWeight: 'bold',
+    fontFamily: "'Fredoka One', cursive",
+  },
+
+  randomFacts: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
   },
 
   footer: {
-    background: "#b6d559",
-    color: "white",
-    textAlign: "center",
-    padding: "clamp(20px, 3vw, 25px)",
-    marginTop: "clamp(20px, 3vw, 25px)",
-    fontWeight: "700",
-    fontSize: "clamp(1em, 1.8vw, 1.1em)",
-    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-    letterSpacing: "clamp(0.5px, 0.1vw, 1px)",
-    border: "clamp(3px, 0.5vw, 4px) solid #fff",
-    borderRadius: "0 0 clamp(15px, 2vw, 20px) clamp(15px, 2vw, 20px)",
-    boxShadow: "0 -5px 15px rgba(0, 0, 0, 0.2)",
+    background: 'linear-gradient(45deg, #FF69B4, #00BFFF, #32CD32, #FFD700)',
+    padding: '15px',
+    borderTop: '3px solid #FF1493',
+  },
+
+  footerContent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: '#FFFFFF',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5)',
+    fontFamily: "'Fredoka One', cursive",
+  },
+
+  // Responsive adjustments
+  '@media (max-width: 768px)': {
+    mainContent: {
+      gridTemplateColumns: '1fr',
+      gap: '15px',
+    },
+    
+    welcomeTitle: {
+      fontSize: '24px',
+    },
+    
+    movieHeader: {
+      flexDirection: 'column',
+      gap: '10px',
+      textAlign: 'center',
+    },
+    
+    footerContent: {
+      flexDirection: 'column',
+      gap: '10px',
+      textAlign: 'center',
+    },
   },
 };
 
