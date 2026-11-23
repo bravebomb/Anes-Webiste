@@ -1,2 +1,2289 @@
-const SUPABASE_URL = 'https://dthwqlbqvuvaaznpcdjn.supabase.co'; const
-SUPABASE_ANON_KEY = 'sb_publishable_-uuV6RYTq8CfVxFKazT2QQ_2VYgT9hW';
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Dagbok" />
+    <meta name="theme-color" content="#111110" />
+    <title>Dagbok</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+      /* =============================================
+       TOKENS & RESET
+    ============================================= */
+      :root {
+        --bg: #111110;
+        --bg2: #1a1a18;
+        --bg3: #222220;
+        --border: #2e2e2b;
+        --border2: #3a3a37;
+        --text: #e8e6df;
+        --text2: #9e9b91;
+        --text3: #5a5852;
+        --accent: #d4a853; /* warm gold — JDM/retro */
+        --accent2: #8bb4c8; /* dusty blue */
+        --accent3: #c17b5a; /* terra cotta */
+        --white: #f5f3ec;
+        --red: #c0392b;
+        --green: #4a7c59;
+        --radius-sm: 4px;
+        --radius: 8px;
+        --radius-lg: 14px;
+        --font-serif: "DM Serif Display", Georgia, serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --font-sans: "Inter", system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-size: 16px;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100dvh;
+        overflow-x: hidden;
+      }
+
+      input,
+      textarea,
+      button,
+      select {
+        font-family: inherit;
+        font-size: inherit;
+      }
+
+      /* =============================================
+       UTILITY
+    ============================================= */
+      .hidden {
+        display: none !important;
+      }
+      .mono {
+        font-family: var(--font-mono);
+      }
+
+      /* =============================================
+       AUTH SCREEN
+    ============================================= */
+      #auth-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100dvh;
+        padding: 40px 24px;
+        gap: 0;
+      }
+
+      .auth-masthead {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .auth-masthead .logotype {
+        font-family: var(--font-serif);
+        font-size: 3rem;
+        color: var(--white);
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+
+      .auth-masthead .logotype em {
+        color: var(--accent);
+        font-style: italic;
+      }
+
+      .auth-masthead .tagline {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-top: 10px;
+      }
+
+      .auth-rule {
+        width: 100%;
+        max-width: 360px;
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 0 auto 32px;
+      }
+
+      .auth-form {
+        width: 100%;
+        max-width: 360px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .field-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text2);
+        margin-bottom: 4px;
+        display: block;
+      }
+
+      .text-input {
+        width: 100%;
+        padding: 13px 14px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-size: 1rem;
+        transition: border-color 0.15s;
+        outline: none;
+      }
+
+      .text-input:focus {
+        border-color: var(--accent);
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background: var(--accent);
+        border: none;
+        border-radius: var(--radius-sm);
+        color: #111;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+      .btn-primary:active {
+        opacity: 0.75;
+      }
+
+      .auth-status {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        text-align: center;
+        color: var(--accent2);
+        min-height: 20px;
+        margin-top: 4px;
+      }
+
+      /* =============================================
+       APP SHELL
+    ============================================= */
+      #app-screen {
+        display: none;
+      }
+
+      /* Masthead / header */
+      .app-header {
+        border-bottom: 1px solid var(--border);
+        padding: 0 20px;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+      }
+
+      .app-logo {
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        color: var(--white);
+        letter-spacing: -0.01em;
+        padding: 14px 0;
+      }
+
+      .app-logo em {
+        color: var(--accent);
+        font-style: italic;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        color: var(--text2);
+        cursor: pointer;
+        padding: 10px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.15s;
+      }
+      .icon-btn:hover {
+        color: var(--text);
+      }
+
+      /* Nav */
+      .app-nav {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .app-nav::-webkit-scrollbar {
+        display: none;
+      }
+
+      .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 12px 18px;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--text3);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+        margin-bottom: -1px;
+      }
+      .nav-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+
+      /* Content area */
+      .app-content {
+        padding: 24px 20px 100px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* =============================================
+       SECTION HEADERS
+    ============================================= */
+      .section-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-title {
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        color: var(--white);
+        letter-spacing: -0.02em;
+      }
+
+      .section-date {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* =============================================
+       LOG BLOCKS
+    ============================================= */
+      .log-block {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+
+      .log-block-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .log-block-icon {
+        color: var(--text2);
+        flex-shrink: 0;
+      }
+
+      .log-block-title {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text2);
+        flex: 1;
+      }
+
+      .log-block-value {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .log-block-body {
+        padding: 16px;
+        background: var(--bg);
+      }
+
+      /* =============================================
+       WATER CONTROL
+    ============================================= */
+      .water-control {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .stepper-btn {
+        width: 44px;
+        height: 44px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-size: 1.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.15s;
+        flex-shrink: 0;
+      }
+      .stepper-btn:active {
+        border-color: var(--accent);
+      }
+
+      .water-display {
+        flex: 1;
+        text-align: center;
+      }
+
+      .water-num {
+        font-family: var(--font-mono);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--accent2);
+        line-height: 1;
+      }
+
+      .water-unit {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        margin-top: 2px;
+      }
+
+      .water-track {
+        display: flex;
+        gap: 4px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .water-pip {
+        flex: 1;
+        min-width: calc(100% / 8 - 4px);
+        height: 4px;
+        background: var(--bg3);
+        border-radius: 2px;
+        transition: background 0.2s;
+      }
+
+      .water-pip.filled {
+        background: var(--accent2);
+      }
+
+      /* =============================================
+       SLIDER
+    ============================================= */
+      .slider-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+      }
+
+      .slider-val {
+        font-family: var(--font-mono);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent);
+        text-align: center;
+        line-height: 1;
+      }
+
+      .slider-unit {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        text-align: center;
+        margin-top: 2px;
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 2px;
+        background: var(--border2);
+        border-radius: 1px;
+        outline: none;
+        cursor: pointer;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--accent);
+        border-radius: 50%;
+        border: 2px solid var(--bg);
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--pct, 0%),
+          var(--border2) var(--pct, 0%)
+        );
+        height: 2px;
+        border-radius: 1px;
+      }
+
+      /* =============================================
+       TOGGLE
+    ============================================= */
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .toggle-label {
+        font-size: 0.95rem;
+        color: var(--text);
+      }
+
+      .toggle {
+        width: 48px;
+        height: 26px;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: 13px;
+        cursor: pointer;
+        position: relative;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+        flex-shrink: 0;
+      }
+
+      .toggle::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        background: var(--text3);
+        border-radius: 50%;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+      }
+
+      .toggle.on {
+        background: var(--green);
+        border-color: var(--green);
+      }
+      .toggle.on::after {
+        transform: translateX(22px);
+        background: var(--white);
+      }
+
+      /* =============================================
+       READING SECTION
+    ============================================= */
+      .book-banner {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+      }
+
+      .book-banner-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .book-banner-title {
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        color: var(--white);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .book-banner-sub {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        letter-spacing: 0.06em;
+        margin-top: 3px;
+      }
+
+      .book-progress-bar {
+        height: 2px;
+        background: var(--border);
+        border-radius: 1px;
+        margin-top: 8px;
+      }
+
+      .book-progress-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 1px;
+        transition: width 0.4s;
+      }
+
+      .pages-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .pages-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .number-input {
+        width: 100%;
+        padding: 11px 12px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .number-input:focus {
+        border-color: var(--accent);
+      }
+
+      /* =============================================
+       TEXTAREA
+    ============================================= */
+      .journal-textarea {
+        width: 100%;
+        min-height: 130px;
+        padding: 14px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        resize: vertical;
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .journal-textarea:focus {
+        border-color: var(--accent);
+      }
+
+      /* Mood row in journal */
+      .mood-strip {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .mood-pill {
+        flex: 1;
+        padding: 9px 6px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text2);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          color 0.15s,
+          background 0.15s;
+      }
+
+      .mood-pill.selected-good {
+        border-color: var(--green);
+        color: var(--green);
+        background: rgba(74, 124, 89, 0.1);
+      }
+      .mood-pill.selected-neutral {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(212, 168, 83, 0.1);
+      }
+      .mood-pill.selected-low {
+        border-color: var(--accent3);
+        color: var(--accent3);
+        background: rgba(193, 123, 90, 0.1);
+      }
+
+      /* =============================================
+       STEPS FIELD
+    ============================================= */
+      .steps-display {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+
+      .steps-num {
+        font-family: var(--font-mono);
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--accent3);
+      }
+
+      .steps-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* =============================================
+       SAVE BAR
+    ============================================= */
+      .save-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 20px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        background: var(--bg);
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        z-index: 100;
+      }
+
+      .save-btn {
+        flex: 1;
+        padding: 13px;
+        background: var(--accent);
+        border: none;
+        border-radius: var(--radius-sm);
+        color: #111;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: opacity 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .save-btn:active {
+        opacity: 0.75;
+      }
+      .save-btn:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      .save-status {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--green);
+        min-width: 60px;
+        text-align: right;
+      }
+
+      /* =============================================
+       MODAL (book setup)
+    ============================================= */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 200;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .modal-sheet {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-bottom: none;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        width: 100%;
+        max-width: 600px;
+        padding: 24px 24px max(24px, env(safe-area-inset-bottom));
+      }
+
+      .modal-title {
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        color: var(--white);
+        margin-bottom: 20px;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .btn-secondary {
+        flex: 1;
+        padding: 13px;
+        background: none;
+        border: 1px solid var(--border2);
+        border-radius: var(--radius-sm);
+        color: var(--text2);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      /* =============================================
+       STATS VIEW
+    ============================================= */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .stat-tile {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+      }
+
+      .stat-tile-label {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text3);
+        margin-bottom: 8px;
+      }
+
+      .stat-tile-num {
+        font-family: var(--font-mono);
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--accent);
+        line-height: 1;
+      }
+
+      .stat-tile-sub {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        margin-top: 4px;
+      }
+
+      .chart-block {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 20px;
+        margin-bottom: 12px;
+      }
+
+      .chart-label {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text2);
+        margin-bottom: 16px;
+      }
+
+      .chart-wrap {
+        position: relative;
+        height: 180px;
+      }
+
+      /* =============================================
+       CALENDAR VIEW
+    ============================================= */
+      .cal-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .cal-month {
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        color: var(--white);
+      }
+
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+      }
+
+      .cal-dow {
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        color: var(--text3);
+        padding: 4px 0 8px;
+      }
+
+      .cal-cell {
+        aspect-ratio: 1;
+        border-radius: 4px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--text2);
+        gap: 3px;
+        cursor: default;
+      }
+
+      .cal-cell.empty {
+        background: transparent;
+        border-color: transparent;
+      }
+      .cal-cell.today {
+        border-color: var(--accent);
+        color: var(--text);
+      }
+      .cal-cell.has-data {
+        background: var(--bg3);
+      }
+
+      .cal-dots {
+        display: flex;
+        gap: 2px;
+        align-items: center;
+      }
+
+      .cal-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+      }
+
+      /* =============================================
+       READING LOG
+    ============================================= */
+      .session-list {
+        margin-top: 10px;
+      }
+
+      .session-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .session-item:last-child {
+        border-bottom: none;
+      }
+
+      .session-date {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text3);
+        white-space: nowrap;
+        padding-top: 2px;
+        min-width: 50px;
+      }
+
+      .session-pages {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--accent);
+        white-space: nowrap;
+      }
+
+      .session-note {
+        font-size: 0.85rem;
+        color: var(--text2);
+        flex: 1;
+        line-height: 1.4;
+      }
+
+      /* =============================================
+       EMPTY STATES
+    ============================================= */
+      .empty-state {
+        text-align: center;
+        padding: 48px 24px;
+        color: var(--text3);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+      }
+
+      .empty-state .empty-icon {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        display: block;
+        color: var(--border2);
+      }
+
+      /* =============================================
+       DIVIDERS & MISC
+    ============================================= */
+      .rule {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 16px 0;
+      }
+
+      .text-muted {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text3);
+        letter-spacing: 0.06em;
+      }
+
+      /* Scroll past save bar */
+      .save-bar-spacer {
+        height: 76px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- =============================================
+     AUTH
+============================================= -->
+    <div id="auth-screen">
+      <div class="auth-masthead">
+        <div class="logotype">Dag<em>bok</em></div>
+        <div class="tagline">Personlig logg — privat</div>
+      </div>
+      <hr class="auth-rule" />
+      <div class="auth-form">
+        <div>
+          <label class="field-label" for="email-input">E-postadress</label>
+          <input
+            id="email-input"
+            class="text-input"
+            type="email"
+            inputmode="email"
+            placeholder="din@email.se"
+            autocomplete="email"
+          />
+        </div>
+        <button class="btn-primary" onclick="sendMagicLink()">
+          <span id="auth-btn-text">Skicka inloggningslänk</span>
+        </button>
+        <div class="auth-status" id="auth-msg"></div>
+      </div>
+    </div>
+
+    <!-- =============================================
+     APP
+============================================= -->
+    <div id="app-screen">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="app-logo">Dag<em>bok</em></div>
+        <div class="header-right">
+          <button class="icon-btn" onclick="signOut()" title="Logga ut">
+            <i class="ph ph-sign-out" style="font-size: 20px"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Nav -->
+      <nav class="app-nav">
+        <button class="nav-btn active" onclick="showView('log')" id="nav-log">
+          <i class="ph ph-pencil-simple"></i> Logga
+        </button>
+        <button class="nav-btn" onclick="showView('stats')" id="nav-stats">
+          <i class="ph ph-chart-bar"></i> Statistik
+        </button>
+        <button
+          class="nav-btn"
+          onclick="showView('calendar')"
+          id="nav-calendar"
+        >
+          <i class="ph ph-calendar-blank"></i> Kalender
+        </button>
+        <button class="nav-btn" onclick="showView('reading')" id="nav-reading">
+          <i class="ph ph-books"></i> Böcker
+        </button>
+      </nav>
+
+      <!-- ==================== LOG VIEW ==================== -->
+      <div id="log-view" class="app-content">
+        <div class="section-header">
+          <div class="section-title" id="log-title">Idag</div>
+          <div class="section-date" id="log-date-label"></div>
+        </div>
+
+        <!-- VATTEN -->
+        <div class="log-block">
+          <div class="log-block-header">
+            <i class="ph ph-drop log-block-icon" style="font-size: 16px"></i>
+            <span class="log-block-title">Vatten</span>
+            <span class="log-block-value mono" id="water-display-val"
+              >0.0 L</span
+            >
+          </div>
+          <div class="log-block-body">
+            <div class="water-control">
+              <button class="stepper-btn" onclick="changeWater(-0.5)">
+                <i class="ph ph-minus"></i>
+              </button>
+              <div class="water-display">
+                <div class="water-num" id="water-num">0.0</div>
+                <div class="water-unit">LITER / MÅL 2.0 L</div>
+              </div>
+              <button class="stepper-btn" onclick="changeWater(0.5)">
+                <i class="ph ph-plus"></i>
+              </button>
+            </div>
+            <div class="water-track" id="water-track"></div>
+          </div>
+        </div>
+
+        <!-- SÖMN -->
+        <div class="log-block">
+          <div class="log-block-header">
+            <i
+              class="ph ph-moon-stars log-block-icon"
+              style="font-size: 16px"
+            ></i>
+            <span class="log-block-title">Sömn</span>
+            <span class="log-block-value mono" id="sleep-display-val"
+              >7.0 h</span
+            >
+          </div>
+          <div class="log-block-body">
+            <div class="slider-wrap">
+              <div class="slider-val" id="sleep-val">7.0</div>
+              <div class="slider-unit">TIMMAR</div>
+              <input
+                type="range"
+                id="sleep-slider"
+                min="3"
+                max="12"
+                step="0.5"
+                value="7"
+                oninput="updateSleep(this.value)"
+              />
+              <div class="slider-labels">
+                <span>3 h</span>
+                <span>12 h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEG -->
+        <div class="log-block">
+          <div class="log-block-header">
+            <i
+              class="ph ph-sneaker-move log-block-icon"
+              style="font-size: 16px"
+            ></i>
+            <span class="log-block-title">Steg</span>
+            <span class="log-block-value mono" id="steps-display-val"
+              >— st</span
+            >
+          </div>
+          <div class="log-block-body">
+            <div class="steps-display">
+              <input
+                class="number-input"
+                id="steps-input"
+                type="number"
+                inputmode="numeric"
+                placeholder="8 423"
+                oninput="updateSteps(this.value)"
+                style="font-size: 1.8rem; padding: 8px 12px; width: 100%"
+              />
+            </div>
+            <div class="text-muted" style="margin-top: 8px">
+              Öppnas automatiskt via iPhone-genväg: ?steps=8423
+            </div>
+          </div>
+        </div>
+
+        <!-- LÄSNING -->
+        <div class="log-block">
+          <div class="log-block-header">
+            <i
+              class="ph ph-book-open log-block-icon"
+              style="font-size: 16px"
+            ></i>
+            <span class="log-block-title">Läsning</span>
+            <span class="log-block-value mono" id="read-display-val">—</span>
+          </div>
+          <div class="log-block-body">
+            <!-- Aktiv bok-banner -->
+            <div id="book-banner" class="book-banner" onclick="openBookModal()">
+              <i
+                class="ph ph-book"
+                style="font-size: 24px; color: var(--text3); flex-shrink: 0"
+              ></i>
+              <div class="book-banner-info">
+                <div class="book-banner-title" id="book-title-display">
+                  Ingen bok vald
+                </div>
+                <div class="book-banner-sub" id="book-progress-text">
+                  Tryck för att lägga till
+                </div>
+                <div class="book-progress-bar">
+                  <div
+                    class="book-progress-fill"
+                    id="book-progress-fill"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+              <i
+                class="ph ph-caret-right"
+                style="font-size: 16px; color: var(--text3)"
+              ></i>
+            </div>
+
+            <!-- Toggle -->
+            <div class="toggle-row" style="margin-bottom: 14px">
+              <span class="toggle-label">Läst 30+ min idag?</span>
+              <button
+                class="toggle"
+                id="read-toggle"
+                onclick="toggleRead()"
+              ></button>
+            </div>
+
+            <!-- Sidor + anteckning (visas när toggle är på) -->
+            <div id="reading-fields" class="hidden">
+              <div class="pages-row">
+                <div class="pages-field">
+                  <label class="field-label">Från sida</label>
+                  <input
+                    class="number-input"
+                    id="page-from"
+                    type="number"
+                    inputmode="numeric"
+                    placeholder="142"
+                  />
+                </div>
+                <div class="pages-field">
+                  <label class="field-label">Till sida</label>
+                  <input
+                    class="number-input"
+                    id="page-to"
+                    type="number"
+                    inputmode="numeric"
+                    placeholder="178"
+                  />
+                </div>
+              </div>
+              <div style="margin-top: 10px">
+                <label class="field-label">Tankar om det du läste</label>
+                <textarea
+                  class="journal-textarea"
+                  id="reading-note"
+                  placeholder="Vad fastnade du för? Vad tyckte du?"
+                  style="min-height: 80px"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DAGBOK & HUMÖR -->
+        <div class="log-block">
+          <div class="log-block-header">
+            <i class="ph ph-notepad log-block-icon" style="font-size: 16px"></i>
+            <span class="log-block-title">Dagbok &amp; humör</span>
+            <span class="log-block-value mono" id="mood-display-val">—</span>
+          </div>
+          <div class="log-block-body">
+            <div class="mood-strip">
+              <button
+                class="mood-pill"
+                onclick="setMood('bra')"
+                data-mood="bra"
+              >
+                Bra
+              </button>
+              <button
+                class="mood-pill"
+                onclick="setMood('okej')"
+                data-mood="okej"
+              >
+                Okej
+              </button>
+              <button
+                class="mood-pill"
+                onclick="setMood('seg')"
+                data-mood="seg"
+              >
+                Seg
+              </button>
+              <button
+                class="mood-pill"
+                onclick="setMood('tuff')"
+                data-mood="tuff"
+              >
+                Tuff
+              </button>
+            </div>
+            <textarea
+              class="journal-textarea"
+              id="journal-note"
+              placeholder="Hur var dagen? En sak du är nöjd med. Imorgon vill du…"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="save-bar-spacer"></div>
+      </div>
+
+      <!-- ==================== STATS VIEW ==================== -->
+      <div id="stats-view" class="app-content hidden">
+        <div class="section-header">
+          <div class="section-title">Statistik</div>
+          <div class="section-date" id="stats-range-label">
+            Senaste 14 dagarna
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-tile">
+            <div class="stat-tile-label">Snitt vatten</div>
+            <div class="stat-tile-num" id="stat-water">—</div>
+            <div class="stat-tile-sub">liter/dag</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-label">Snitt sömn</div>
+            <div class="stat-tile-num" id="stat-sleep">—</div>
+            <div class="stat-tile-sub">timmar/natt</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-label">Läsdagar</div>
+            <div class="stat-tile-num" id="stat-read">—</div>
+            <div class="stat-tile-sub">
+              av <span id="stat-read-total">14</span>
+            </div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-tile-label">Snitt steg</div>
+            <div class="stat-tile-num" id="stat-steps">—</div>
+            <div class="stat-tile-sub">per dag</div>
+          </div>
+        </div>
+
+        <!-- Vatten — stapeldiagram -->
+        <div class="chart-block">
+          <div class="chart-label">Vatten per dag (L)</div>
+          <div class="chart-wrap">
+            <canvas id="chart-water"></canvas>
+          </div>
+        </div>
+
+        <!-- Sömn — linjediagram -->
+        <div class="chart-block">
+          <div class="chart-label">Sömn per natt (h)</div>
+          <div class="chart-wrap">
+            <canvas id="chart-sleep"></canvas>
+          </div>
+        </div>
+
+        <!-- Steg — stapeldiagram -->
+        <div class="chart-block">
+          <div class="chart-label">Steg per dag</div>
+          <div class="chart-wrap">
+            <canvas id="chart-steps"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== CALENDAR VIEW ==================== -->
+      <div id="calendar-view" class="app-content hidden">
+        <div class="cal-nav">
+          <button class="icon-btn" onclick="changeMonth(-1)">
+            <i class="ph ph-caret-left" style="font-size: 20px"></i>
+          </button>
+          <div class="cal-month" id="cal-month-label"></div>
+          <button class="icon-btn" onclick="changeMonth(1)">
+            <i class="ph ph-caret-right" style="font-size: 20px"></i>
+          </button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div
+          style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap"
+        >
+          <span class="text-muted"
+            ><span
+              style="
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--accent2);
+                margin-right: 4px;
+              "
+            ></span
+            >Vatten</span
+          >
+          <span class="text-muted"
+            ><span
+              style="
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--accent);
+                margin-right: 4px;
+              "
+            ></span
+            >Sömn</span
+          >
+          <span class="text-muted"
+            ><span
+              style="
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--green);
+                margin-right: 4px;
+              "
+            ></span
+            >Läsning</span
+          >
+          <span class="text-muted"
+            ><span
+              style="
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--accent3);
+                margin-right: 4px;
+              "
+            ></span
+            >Steg</span
+          >
+        </div>
+      </div>
+
+      <!-- ==================== READING VIEW ==================== -->
+      <div id="reading-view" class="app-content hidden">
+        <div class="section-header">
+          <div class="section-title">Böcker</div>
+          <button
+            class="icon-btn"
+            onclick="openBookModal()"
+            style="color: var(--accent)"
+          >
+            <i class="ph ph-plus" style="font-size: 20px"></i>
+          </button>
+        </div>
+
+        <!-- Current book -->
+        <div id="reading-current-block" class="log-block hidden">
+          <div class="log-block-header">
+            <i
+              class="ph ph-book-open log-block-icon"
+              style="font-size: 16px"
+            ></i>
+            <span class="log-block-title">Läser nu</span>
+          </div>
+          <div class="log-block-body">
+            <div style="margin-bottom: 12px">
+              <div
+                style="
+                  font-family: var(--font-serif);
+                  font-size: 1.2rem;
+                  color: var(--white);
+                "
+                id="book-current-title"
+              >
+                —
+              </div>
+              <div
+                style="
+                  font-family: var(--font-mono);
+                  font-size: 0.65rem;
+                  color: var(--text3);
+                  margin-top: 4px;
+                "
+                id="book-current-author"
+              >
+                —
+              </div>
+            </div>
+            <div
+              style="
+                margin-bottom: 6px;
+                font-family: var(--font-mono);
+                font-size: 0.65rem;
+                color: var(--text3);
+              "
+            >
+              Framsteg:
+              <span id="book-current-progress-text" style="color: var(--accent)"
+                >0%</span
+              >
+            </div>
+            <div class="book-progress-bar" style="height: 4px">
+              <div
+                class="book-progress-fill"
+                id="book-current-progress-fill"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session log -->
+        <div class="log-block" style="margin-top: 12px">
+          <div class="log-block-header">
+            <i
+              class="ph ph-list-bullets log-block-icon"
+              style="font-size: 16px"
+            ></i>
+            <span class="log-block-title">Lässessioner</span>
+          </div>
+          <div class="log-block-body">
+            <div class="session-list" id="session-list">
+              <div class="empty-state">
+                <i class="ph ph-books empty-icon"></i>
+                Inga sessioner loggade än
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save bar (bara i log-vyn) -->
+      <div class="save-bar" id="save-bar">
+        <button class="save-btn" id="save-btn" onclick="saveLog()">
+          <i class="ph ph-floppy-disk"></i>
+          Spara dagen
+        </button>
+        <div class="save-status" id="save-status"></div>
+      </div>
+    </div>
+
+    <!-- =============================================
+     BOOK MODAL
+============================================= -->
+    <div class="modal-overlay hidden" id="book-modal">
+      <div class="modal-sheet">
+        <div class="modal-title">Aktiv bok</div>
+        <div>
+          <label class="field-label">Titel</label>
+          <input
+            class="text-input"
+            id="modal-book-title"
+            type="text"
+            placeholder="Boktitel"
+          />
+        </div>
+        <div style="margin-top: 12px">
+          <label class="field-label">Författare (valfritt)</label>
+          <input
+            class="text-input"
+            id="modal-book-author"
+            type="text"
+            placeholder="Förnamn Efternamn"
+          />
+        </div>
+        <div style="margin-top: 12px">
+          <label class="field-label">Totalt antal sidor</label>
+          <input
+            class="number-input"
+            id="modal-book-pages"
+            type="number"
+            inputmode="numeric"
+            placeholder="384"
+          />
+        </div>
+        <div style="margin-top: 12px">
+          <label class="field-label">Nuvarande sida (startposition)</label>
+          <input
+            class="number-input"
+            id="modal-book-current"
+            type="number"
+            inputmode="numeric"
+            placeholder="1"
+          />
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" onclick="closeBookModal()">
+            Avbryt
+          </button>
+          <button class="btn-primary" style="flex: 2" onclick="saveBook()">
+            Spara bok
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================
+     SCRIPT
+============================================= -->
+    <script>
+      // ═══════════════════════════════════════════════
+      // CONFIG — fyll i dina Supabase-värden
+      // ═══════════════════════════════════════════════
+      const SUPABASE_URL = "https://dthwqlbqvuvaaznpcdjn.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_-uuV6RYTq8CfVxFKazT2QQ_2VYgT9hW";
+
+      // ═══════════════════════════════════════════════
+      // INIT
+      // ═══════════════════════════════════════════════
+      const { createClient } = supabase;
+      const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      let currentUser = null;
+      let activeBook = null; // { id, title, author, total_pages, current_page }
+      let calViewDate = new Date();
+      let chartInstances = {};
+
+      // State för dagen
+      const state = {
+        water: 0,
+        sleep: 7,
+        steps: null,
+        read: false,
+        page_from: null,
+        page_to: null,
+        note: "",
+        mood: null,
+        reading_note: "",
+      };
+
+      // ── Helpers ──
+      const $ = (id) => document.getElementById(id);
+      const todayStr = () => new Date().toISOString().slice(0, 10);
+
+      function nDaysAgo(n) {
+        const d = new Date();
+        d.setDate(d.getDate() - n);
+        return d.toISOString().slice(0, 10);
+      }
+
+      function fmtShort(dateStr) {
+        return new Date(dateStr + "T12:00:00").toLocaleDateString("sv-SE", {
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      // ── URL-params (iPhone-genväg) ──
+      function handleUrlParams() {
+        const p = new URLSearchParams(location.search);
+        const steps = p.get("steps");
+        if (steps) {
+          const v = parseInt(steps);
+          if (!isNaN(v)) {
+            state.steps = v;
+            $("steps-input").value = v;
+            $("steps-display-val").textContent =
+              v.toLocaleString("sv-SE") + " st";
+          }
+        }
+      }
+
+      // ═══════════════════════════════════════════════
+      // AUTH
+      // ═══════════════════════════════════════════════
+      async function sendMagicLink() {
+        const email = $("email-input").value.trim();
+        if (!email) return;
+        $("auth-btn-text").textContent = "Skickar…";
+        const { error } = await db.auth.signInWithOtp({ email });
+        $("auth-btn-text").textContent = "Skicka inloggningslänk";
+        $("auth-msg").textContent = error
+          ? "Fel: " + error.message
+          : "✓ Kolla din e-post och klicka på länken.";
+      }
+
+      async function signOut() {
+        await db.auth.signOut();
+        location.reload();
+      }
+
+      // ═══════════════════════════════════════════════
+      // APP BOOTSTRAP
+      // ═══════════════════════════════════════════════
+      async function bootApp(user) {
+        currentUser = user;
+        $("auth-screen").style.display = "none";
+        $("app-screen").style.display = "block";
+
+        // Datum-labels
+        const now = new Date();
+        $("log-date-label").textContent = now.toLocaleDateString("sv-SE", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        });
+
+        await Promise.all([loadToday(), loadActiveBook()]);
+        handleUrlParams();
+        updateSliderTrack($("sleep-slider"));
+      }
+
+      // ── Ladda dagens logg ──
+      async function loadToday() {
+        const { data } = await db
+          .from("daily_log")
+          .select("*")
+          .eq("log_date", todayStr())
+          .single();
+
+        if (!data) return;
+
+        state.water = data.water ?? 0;
+        state.sleep = data.sleep_h ?? 7;
+        state.steps = data.steps;
+        state.read = data.read_30min ?? false;
+        state.mood = data.mood;
+        state.page_from = data.page_from;
+        state.page_to = data.page_to;
+        state.reading_note = data.reading_note ?? "";
+
+        // Render
+        $("water-num").textContent = state.water.toFixed(1);
+        $("water-display-val").textContent = state.water.toFixed(1) + " L";
+        renderWaterPips();
+
+        $("sleep-slider").value = state.sleep;
+        $("sleep-val").textContent = Number(state.sleep).toFixed(1);
+        $("sleep-display-val").textContent =
+          Number(state.sleep).toFixed(1) + " h";
+        updateSliderTrack($("sleep-slider"));
+
+        if (state.steps != null) {
+          $("steps-input").value = state.steps;
+          $("steps-display-val").textContent =
+            Number(state.steps).toLocaleString("sv-SE") + " st";
+        }
+
+        if (state.read) {
+          $("read-toggle").classList.add("on");
+          $("reading-fields").classList.remove("hidden");
+          $("read-display-val").textContent = "Ja";
+        }
+
+        if (state.page_from) $("page-from").value = state.page_from;
+        if (state.page_to) $("page-to").value = state.page_to;
+        if (state.reading_note) $("reading-note").value = state.reading_note;
+
+        if (state.mood) setMood(state.mood, false);
+
+        if (data.note) {
+          $("journal-note").value = data.note;
+          state.note = data.note;
+        }
+      }
+
+      // ═══════════════════════════════════════════════
+      // WATER
+      // ═══════════════════════════════════════════════
+      function changeWater(delta) {
+        state.water = Math.max(
+          0,
+          Math.min(5, parseFloat((state.water + delta).toFixed(1))),
+        );
+        $("water-num").textContent = state.water.toFixed(1);
+        $("water-display-val").textContent = state.water.toFixed(1) + " L";
+        renderWaterPips();
+      }
+
+      function renderWaterPips() {
+        const track = $("water-track");
+        track.innerHTML = "";
+        const goal = 2.0;
+        const steps = goal / 0.5; // 4 pips per liter = 8 pips for 2L goal
+        for (let i = 0; i < steps; i++) {
+          const pip = document.createElement("div");
+          pip.className =
+            "water-pip" + ((i + 1) * 0.5 <= state.water ? " filled" : "");
+          track.appendChild(pip);
+        }
+      }
+
+      // ═══════════════════════════════════════════════
+      // SLEEP SLIDER
+      // ═══════════════════════════════════════════════
+      function updateSleep(val) {
+        state.sleep = parseFloat(val);
+        $("sleep-val").textContent = state.sleep.toFixed(1);
+        $("sleep-display-val").textContent = state.sleep.toFixed(1) + " h";
+        updateSliderTrack($("sleep-slider"));
+      }
+
+      function updateSliderTrack(el) {
+        const min = parseFloat(el.min);
+        const max = parseFloat(el.max);
+        const val = parseFloat(el.value);
+        const pct = ((val - min) / (max - min)) * 100;
+        el.style.setProperty("--pct", pct + "%");
+      }
+
+      // ═══════════════════════════════════════════════
+      // STEPS
+      // ═══════════════════════════════════════════════
+      function updateSteps(val) {
+        const v = parseInt(val);
+        state.steps = isNaN(v) ? null : v;
+        $("steps-display-val").textContent =
+          state.steps != null
+            ? state.steps.toLocaleString("sv-SE") + " st"
+            : "— st";
+      }
+
+      // ═══════════════════════════════════════════════
+      // READING TOGGLE
+      // ═══════════════════════════════════════════════
+      function toggleRead() {
+        state.read = !state.read;
+        $("read-toggle").classList.toggle("on", state.read);
+        $("reading-fields").classList.toggle("hidden", !state.read);
+        $("read-display-val").textContent = state.read ? "Ja" : "—";
+      }
+
+      // ═══════════════════════════════════════════════
+      // MOOD
+      // ═══════════════════════════════════════════════
+      const moodClass = {
+        bra: "selected-good",
+        okej: "selected-neutral",
+        seg: "selected-low",
+        tuff: "selected-low",
+      };
+
+      function setMood(mood, updateState = true) {
+        if (updateState) state.mood = mood;
+        document.querySelectorAll(".mood-pill").forEach((b) => {
+          b.className = "mood-pill";
+          if (b.dataset.mood === mood)
+            b.classList.add(moodClass[mood] || "selected-neutral");
+        });
+        $("mood-display-val").textContent =
+          mood.charAt(0).toUpperCase() + mood.slice(1);
+      }
+
+      // ═══════════════════════════════════════════════
+      // SAVE
+      // ═══════════════════════════════════════════════
+      async function saveLog() {
+        const btn = $("save-btn");
+        btn.disabled = true;
+        $("save-status").textContent = "";
+
+        const pageFrom = parseInt($("page-from").value) || null;
+        const pageTo = parseInt($("page-to").value) || null;
+        const readNote = $("reading-note").value || null;
+        const journal = $("journal-note").value || null;
+
+        const payload = {
+          user_id: currentUser.id,
+          log_date: todayStr(),
+          water: state.water,
+          sleep_h: state.sleep,
+          steps: state.steps,
+          read_30min: state.read,
+          page_from: state.read ? pageFrom : null,
+          page_to: state.read ? pageTo : null,
+          reading_note: state.read ? readNote : null,
+          mood: state.mood,
+          note: journal,
+        };
+
+        const { error } = await db.from("daily_log").upsert(payload, {
+          onConflict: "user_id,log_date",
+        });
+
+        // Uppdatera bokens current_page om vi läst
+        if (!error && state.read && pageTo && activeBook) {
+          await db
+            .from("books")
+            .update({ current_page: pageTo })
+            .eq("id", activeBook.id);
+          activeBook.current_page = pageTo;
+          renderBookBanner();
+        }
+
+        btn.disabled = false;
+        if (error) {
+          $("save-status").textContent = "✗ Fel";
+        } else {
+          $("save-status").textContent = "✓ Sparat";
+          setTimeout(() => ($("save-status").textContent = ""), 3000);
+        }
+      }
+
+      // ═══════════════════════════════════════════════
+      // BOOKS
+      // ═══════════════════════════════════════════════
+      async function loadActiveBook() {
+        const { data } = await db
+          .from("books")
+          .select("*")
+          .eq("user_id", currentUser.id)
+          .eq("active", true)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (data) {
+          activeBook = data;
+          renderBookBanner();
+          renderReadingView();
+        }
+      }
+
+      function renderBookBanner() {
+        if (!activeBook) return;
+        $("book-title-display").textContent = activeBook.title;
+        const pct = activeBook.total_pages
+          ? Math.round((activeBook.current_page / activeBook.total_pages) * 100)
+          : 0;
+        $("book-progress-text").textContent =
+          `Sida ${activeBook.current_page} av ${activeBook.total_pages} — ${pct}%`;
+        $("book-progress-fill").style.width = pct + "%";
+      }
+
+      function openBookModal() {
+        if (activeBook) {
+          $("modal-book-title").value = activeBook.title;
+          $("modal-book-author").value = activeBook.author || "";
+          $("modal-book-pages").value = activeBook.total_pages || "";
+          $("modal-book-current").value = activeBook.current_page || 1;
+        }
+        $("book-modal").classList.remove("hidden");
+      }
+
+      function closeBookModal() {
+        $("book-modal").classList.add("hidden");
+      }
+
+      async function saveBook() {
+        const title = $("modal-book-title").value.trim();
+        const author = $("modal-book-author").value.trim();
+        const total = parseInt($("modal-book-pages").value) || 0;
+        const current = parseInt($("modal-book-current").value) || 1;
+        if (!title) return;
+
+        // Deaktivera gamla böcker
+        await db
+          .from("books")
+          .update({ active: false })
+          .eq("user_id", currentUser.id);
+
+        const payload = {
+          user_id: currentUser.id,
+          title,
+          author: author || null,
+          total_pages: total,
+          current_page: current,
+          active: true,
+        };
+
+        if (activeBook) {
+          await db.from("books").update(payload).eq("id", activeBook.id);
+          activeBook = { ...activeBook, ...payload };
+        } else {
+          const { data } = await db
+            .from("books")
+            .insert(payload)
+            .select()
+            .single();
+          activeBook = data;
+        }
+
+        renderBookBanner();
+        renderReadingView();
+        closeBookModal();
+      }
+
+      async function renderReadingView() {
+        if (!activeBook) return;
+
+        $("reading-current-block").classList.remove("hidden");
+        $("book-current-title").textContent = activeBook.title;
+        $("book-current-author").textContent = activeBook.author || "";
+        const pct = activeBook.total_pages
+          ? Math.round((activeBook.current_page / activeBook.total_pages) * 100)
+          : 0;
+        $("book-current-progress-text").textContent = pct + "%";
+        $("book-current-progress-fill").style.width = pct + "%";
+
+        // Sessioner
+        const { data: sessions } = await db
+          .from("daily_log")
+          .select("log_date, page_from, page_to, reading_note")
+          .eq("user_id", currentUser.id)
+          .eq("read_30min", true)
+          .not("page_from", "is", null)
+          .order("log_date", { ascending: false })
+          .limit(30);
+
+        const list = $("session-list");
+        if (!sessions || sessions.length === 0) {
+          list.innerHTML =
+            '<div class="empty-state"><i class="ph ph-books empty-icon"></i>Inga sessioner loggade än</div>';
+          return;
+        }
+
+        list.innerHTML = sessions
+          .map(
+            (s) => `
+    <div class="session-item">
+      <div class="session-date">${fmtShort(s.log_date)}</div>
+      <div>
+        <div class="session-pages">s. ${s.page_from}–${s.page_to} <span style="color:var(--text3)">(${s.page_to - s.page_from} s)</span></div>
+        ${s.reading_note ? `<div class="session-note">${s.reading_note}</div>` : ""}
+      </div>
+    </div>
+  `,
+          )
+          .join("");
+      }
+
+      // ═══════════════════════════════════════════════
+      // STATS
+      // ═══════════════════════════════════════════════
+      async function loadStats() {
+        const from = nDaysAgo(13);
+        const { data: logs } = await db
+          .from("daily_log")
+          .select("log_date, water, sleep_h, steps, read_30min")
+          .eq("user_id", currentUser.id)
+          .gte("log_date", from)
+          .order("log_date", { ascending: true });
+
+        if (!logs || logs.length === 0) return;
+
+        const days = logs.length;
+        const avgWater = (
+          logs.reduce((s, l) => s + (l.water || 0), 0) / days
+        ).toFixed(1);
+        const avgSleep = (
+          logs.reduce((s, l) => s + (l.sleep_h || 0), 0) / days
+        ).toFixed(1);
+        const readDays = logs.filter((l) => l.read_30min).length;
+        const stepsLogs = logs.filter((l) => l.steps != null);
+        const avgSteps = stepsLogs.length
+          ? Math.round(
+              stepsLogs.reduce((s, l) => s + l.steps, 0) / stepsLogs.length,
+            )
+          : null;
+
+        $("stat-water").textContent = avgWater;
+        $("stat-sleep").textContent = avgSleep;
+        $("stat-read").textContent = readDays;
+        $("stat-read-total").textContent = days;
+        $("stat-steps").textContent =
+          avgSteps != null ? avgSteps.toLocaleString("sv-SE") : "—";
+
+        const labels = logs.map((l) => fmtShort(l.log_date));
+
+        const chartDefaults = {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              ticks: {
+                color: "#5a5852",
+                font: { family: "JetBrains Mono", size: 10 },
+                maxRotation: 45,
+              },
+              grid: { color: "#2e2e2b" },
+            },
+            y: {
+              ticks: {
+                color: "#5a5852",
+                font: { family: "JetBrains Mono", size: 10 },
+              },
+              grid: { color: "#2e2e2b" },
+            },
+          },
+        };
+
+        function makeChart(id, type, data, color, extraOptions = {}) {
+          if (chartInstances[id]) chartInstances[id].destroy();
+          chartInstances[id] = new Chart($(id), {
+            type,
+            data: {
+              labels,
+              datasets: [
+                {
+                  data,
+                  backgroundColor:
+                    type === "bar" ? color + "aa" : "transparent",
+                  borderColor: color,
+                  borderWidth: type === "line" ? 2 : 1,
+                  borderRadius: type === "bar" ? 3 : 0,
+                  pointRadius: type === "line" ? 3 : 0,
+                  pointBackgroundColor: color,
+                  tension: 0.3,
+                  fill: type === "line",
+                },
+              ],
+            },
+            options: { ...chartDefaults, ...extraOptions },
+          });
+        }
+
+        // Vatten — stapel
+        makeChart(
+          "chart-water",
+          "bar",
+          logs.map((l) => l.water ?? 0),
+          "#8bb4c8",
+          {
+            scales: {
+              ...chartDefaults.scales,
+              y: { ...chartDefaults.scales.y, suggestedMax: 3 },
+            },
+          },
+        );
+
+        // Sömn — linje
+        makeChart(
+          "chart-sleep",
+          "line",
+          logs.map((l) => l.sleep_h ?? null),
+          "#d4a853",
+          {
+            spanGaps: true,
+            scales: {
+              ...chartDefaults.scales,
+              y: {
+                ...chartDefaults.scales.y,
+                suggestedMin: 4,
+                suggestedMax: 10,
+              },
+            },
+          },
+        );
+
+        // Steg — stapel
+        makeChart(
+          "chart-steps",
+          "bar",
+          logs.map((l) => l.steps ?? 0),
+          "#c17b5a",
+        );
+      }
+
+      // ═══════════════════════════════════════════════
+      // CALENDAR
+      // ═══════════════════════════════════════════════
+      async function loadCalendar() {
+        const year = calViewDate.getFullYear();
+        const month = calViewDate.getMonth();
+        $("cal-month-label").textContent = calViewDate.toLocaleDateString(
+          "sv-SE",
+          { month: "long", year: "numeric" },
+        );
+
+        const first = new Date(year, month, 1).toISOString().slice(0, 10);
+        const last = new Date(year, month + 1, 0).toISOString().slice(0, 10);
+
+        const { data: logs } = await db
+          .from("daily_log")
+          .select("log_date, water, sleep_h, steps, read_30min")
+          .eq("user_id", currentUser.id)
+          .gte("log_date", first)
+          .lte("log_date", last);
+
+        const map = {};
+        (logs || []).forEach((l) => (map[l.log_date] = l));
+
+        const grid = $("cal-grid");
+        grid.innerHTML = "";
+
+        ["Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"].forEach((d) => {
+          const h = document.createElement("div");
+          h.className = "cal-dow";
+          h.textContent = d;
+          grid.appendChild(h);
+        });
+
+        // empty leading cells
+        const startDow = (new Date(year, month, 1).getDay() + 6) % 7;
+        for (let i = 0; i < startDow; i++) {
+          const e = document.createElement("div");
+          e.className = "cal-cell empty";
+          grid.appendChild(e);
+        }
+
+        const today = todayStr();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let d = 1; d <= daysInMonth; d++) {
+          const ds = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+          const cell = document.createElement("div");
+          const log = map[ds];
+          cell.className =
+            "cal-cell" +
+            (ds === today ? " today" : "") +
+            (log ? " has-data" : "");
+
+          const numEl = document.createElement("div");
+          numEl.textContent = d;
+          cell.appendChild(numEl);
+
+          if (log) {
+            const dots = document.createElement("div");
+            dots.className = "cal-dots";
+            if (log.water > 0)
+              dots.innerHTML += `<div class="cal-dot" style="background:var(--accent2)"></div>`;
+            if (log.sleep_h > 0)
+              dots.innerHTML += `<div class="cal-dot" style="background:var(--accent)"></div>`;
+            if (log.read_30min)
+              dots.innerHTML += `<div class="cal-dot" style="background:var(--green)"></div>`;
+            if (log.steps > 0)
+              dots.innerHTML += `<div class="cal-dot" style="background:var(--accent3)"></div>`;
+            cell.appendChild(dots);
+          }
+          grid.appendChild(cell);
+        }
+      }
+
+      function changeMonth(delta) {
+        calViewDate.setMonth(calViewDate.getMonth() + delta);
+        loadCalendar();
+      }
+
+      // ═══════════════════════════════════════════════
+      // NAV
+      // ═══════════════════════════════════════════════
+      function showView(view) {
+        ["log", "stats", "calendar", "reading"].forEach((v) => {
+          $(`${v}-view`).classList.toggle("hidden", v !== view);
+          $(`nav-${v}`).classList.toggle("active", v === view);
+        });
+        $("save-bar").style.display = view === "log" ? "flex" : "none";
+
+        if (view === "stats") loadStats();
+        if (view === "calendar") loadCalendar();
+        if (view === "reading") renderReadingView();
+      }
+
+      // ═══════════════════════════════════════════════
+      // BOOTSTRAP
+      // ═══════════════════════════════════════════════
+      (async () => {
+        renderWaterPips(); // init pips
+
+        const {
+          data: { session },
+        } = await db.auth.getSession();
+        if (session) await bootApp(session.user);
+
+        db.auth.onAuthStateChange(async (event, session) => {
+          if (session && !currentUser) await bootApp(session.user);
+        });
+      })();
+    </script>
+  </body>
+</html>
